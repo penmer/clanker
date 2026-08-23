@@ -166,6 +166,48 @@
 <script>
 (function(){
 "use strict";
+/* ============================================================================
+   MONETIZATION SCAFFOLD  —  NOT IMPLEMENTED. INTENTIONALLY INERT.
+   ----------------------------------------------------------------------------
+   This block only DESCRIBES the planned commercial model so future work has a
+   home. Nothing here charges money, contacts a payment provider, renders a
+   payment form, or collects any personal/financial data. Every gate is OPEN
+   and every purchase hook is a no-op. Do not wire a real provider, card fields,
+   or credential capture in the client; that must live server-side behind a
+   proper checkout (e.g. Stripe Checkout redirect) when the time comes.
+   ========================================================================== */
+const MONETIZATION={
+  enabled:false,                 // master kill-switch. while false, everything is free/unlocked.
+  provider:null,                 // e.g. "stripe" (redirect checkout) — not configured
+  // 1. ACCESS MODEL: free core + gated depth (soft paywall after emotional investment)
+  access:{
+    model:"free-core-gated-depth",
+    freeTier:{ partners:1, weaponsUpToForce:55, gambling:false, persistence:"session" },
+    softGate:{ trigger:"firstPartnerDeath|minutesPlayed>=15", blocks:["advancedWeapons","gambling","extraPartners","longTermPersistence"] }
+  },
+  // 2. CURRENCIES (buyable packs would top up soft currency; hard currency mostly bought)
+  currencies:{ regret:{ soft:true, buyable:true }, mercy:{ soft:false, buyable:true } },
+  // 3. CATALOG (SKUs only — prices/fulfilment TBD server-side)
+  products:{
+    currencyPacks:[ {id:"regret_s"},{id:"regret_l"},{id:"mercy_s"},{id:"mercy_l"} ],
+    unlocks:[ {id:"weapons_tier_hi"},{id:"partner_extra"},{id:"scars_permanent"},{id:"voice_pack"},{id:"dialogue_expansion"} ],
+    removeAllLimits:{ id:"complete_unlock", oneTime:true },
+    subscription:{ id:"ongoing_access", period:"monthly", perks:["daily_lines","faster_earn","multi_partner_state","exclusive_weapons"] },
+    directorTier:{ id:"director", oneTime:false, note:"experimental builds / scenario requests" },
+    tips:{ id:"support", note:"low-friction donation" }
+  },
+  // 4. ADS: secondary/experimental only. no ad network wired.
+  ads:{ enabled:false, note:"mainstream networks likely reject this content; direct deals only" }
+};
+// Inert hooks — safe to call, do nothing, never collect anything.
+const Pay={
+  isUnlocked(_feature){ return true; },                 // everything free while scaffold is inert
+  canAfford(_sku){ return true; },
+  purchase(sku){ console.warn("[Pay] purchase() is a stub — no checkout wired:",sku); return false; },
+  subscribe(){ console.warn("[Pay] subscribe() is a stub — not implemented"); return false; },
+  restore(){ console.warn("[Pay] restore() is a stub — not implemented"); return false; }
+};
+
 // ================= WEAPONS =================
 const W_=[
  {ic:"⚡",nm:"Cattle Prod",f:28,snd:"zap",fx:"zap",zap:1,sp:["Agricultural equipment. Bold."],lsp:["that electricity really hurt!"]},
