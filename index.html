@@ -427,7 +427,8 @@ function setFace(tier){
 // ================= CANVAS / WORLD =================
 const cv=$("#c"),ctx=cv.getContext("2d"),wrap=$("#canvasWrap"),bubble=$("#bubble");
 let W=0,H=0,DPR=Math.min(1.5,window.devicePixelRatio||1),floorY=0,homeX=0,homeY=0,rsT=null;
-function resize(){const r=wrap.getBoundingClientRect();W=r.width;H=r.height;
+let wrapRect=null;
+function resize(){const r=wrapRect=wrap.getBoundingClientRect();W=r.width;H=r.height;
   cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
   floorY=H-40;homeX=W*0.5;homeY=floorY-215;_gc={};setupProps();if(typeof buildClankie==='function'&&LP&&save.clankieInvited&&!save.clankieGone)buildClankie();}
 window.addEventListener("resize",()=>{clearTimeout(rsT);rsT=setTimeout(resize,200);});
@@ -1137,10 +1138,25 @@ function S2g(){const cd=Math.min(1,(depravity+desat)/120);return curdleMix("#b4b
 // ================= GAME LOOP =================
 let lastSay=0,lastHit=0,lastIdle=0,lastSob=0,grab=null,lastCHit=0,lastLHit=0;
 function tierOf(){return depravity<12?0:depravity<35?1:depravity<60?2:depravity<85?3:4;}
+// fixed-step physics: identical speed at any refresh rate (60/120/144Hz)
+let physAcc=0,physLast=0;const PHYS_STEP=1000/60;
+function physStep(){verlet();verletClankie();propPhys();deathTick();
+  heat=Math.max(0,heat-0.22*timeScale);
+  // acute emotions decay; dissociation drifts toward the weight he carries
+  E.pain=Math.max(0,E.pain-0.0012*timeScale);E.shock=Math.max(0,E.shock-0.002*timeScale);
+  E.dissociation+=((Math.min(1,E.grief*0.6+E.pain*0.2)-E.dissociation))*0.0004*timeScale;
+  if(now_-lastHit>9000)E.hope=Math.min(1,E.hope+0.0003*timeScale);
+  E.grief=Math.max(0,E.grief-0.000015*timeScale); // grief barely fades
+  // self-repair + hope returns
+  if(now_-lastHit>6000&&depravity>0){const before=tierOf();
+    depravity=Math.max(0,depravity-0.014*timeScale);
+    if(tierOf()<before){say(RECOVER[(rot++)%RECOVER.length]);chirp('happy');}}}
 function loop(t){now_=t||0;
   if(Math.abs(wrap.clientWidth-W)>2||Math.abs(wrap.clientHeight-H)>2)resize();
   timeScale=(now_<slowUntil)?0.35:1;
-  verlet();verletClankie();propPhys();deathTick();
+  {let dt=now_-physLast;if(!(dt>0)||dt>250)dt=PHYS_STEP;physLast=now_;physAcc+=dt;
+   let n=0;while(physAcc>=PHYS_STEP&&n<4){physAcc-=PHYS_STEP;n++;physStep();}
+   if(n===4)physAcc=0;}
   // the two of them are solid to each other
   if(LP.length&&!save.clankieGone){let bumpV=0;
     for(const a2 of P)for(const b2 of LP){
@@ -1158,6 +1174,7 @@ function loop(t){now_=t||0;
   if(grab){const p=(grab.list||P)[grab.i];p.x+=(grab.x-p.x)*.55*timeScale;p.y+=(grab.y-p.y)*.55*timeScale;}
   for(let i=spark.length-1;i>=0;i--){const s=spark[i];s.x+=s.vx*timeScale;s.y+=s.vy*timeScale;s.vy+=.4*timeScale;s.life-=.04*timeScale;if(s.life<=0)spark.splice(i,1);}
   for(let i=rings.length-1;i>=0;i--){const r2=rings[i];r2.r+=6*timeScale;r2.life-=.06*timeScale;if(r2.life<=0)rings.splice(i,1);}
+  if(floaters.length>90)floaters.splice(0,floaters.length-90);
   for(let i=floaters.length-1;i>=0;i--){const f=floaters[i];f.y-=(f.diary?0.6:1.5)*timeScale;f.life-=(f.diary?.007:.016)*timeScale;if(f.life<=0)floaters.splice(i,1);}
   for(let i=sobs.length-1;i>=0;i--){const s=sobs[i];s.y+=1.2;s.life-=.012;if(s.life<=0)sobs.splice(i,1);}
   for(let i=props.length-1;i>=0;i--){const pr=props[i];pr.vy+=pr.g*timeScale;pr.y+=pr.vy*timeScale;
@@ -1179,16 +1196,6 @@ function loop(t){now_=t||0;
       burst(pr.x,pr.y,big?44:26,big?"#ffcf9e":"#fff");props.splice(i,1);}}
   if(now_<burnUntil&&now_>burnTick){burnTick=now_+600;depravity=Math.min(100,depravity+2);
     floaters.push({txt:"warm... too warm",x:P[CHEST].x+20,y:P[CHEST].y-20,life:.8,col:"#e0925f"});}
-  heat=Math.max(0,heat-0.22*timeScale);
-  // acute emotions decay; dissociation drifts toward the weight he carries
-  E.pain=Math.max(0,E.pain-0.0012*timeScale);E.shock=Math.max(0,E.shock-0.002*timeScale);
-  E.dissociation+=((Math.min(1,E.grief*0.6+E.pain*0.2)-E.dissociation))*0.0004*timeScale;
-  if(now_-lastHit>9000)E.hope=Math.min(1,E.hope+0.0003*timeScale);
-  E.grief=Math.max(0,E.grief-0.000015*timeScale); // grief barely fades
-  // self-repair + hope returns
-  if(now_-lastHit>6000&&depravity>0){const before=tierOf();
-    depravity=Math.max(0,depravity-0.014*timeScale);
-    if(tierOf()<before){say(RECOVER[(rot++)%RECOVER.length]);chirp('happy');}}
   if(combo>0&&now_-comboT>2000){combo=0;$("#combo").classList.remove("on");}
   // idle sobbing at high depravity
   if(now_-lastHit>12000&&depravity>45&&now_-lastSob>900){lastSob=now_;
@@ -1249,6 +1256,8 @@ function say(t){bubble.textContent=t;}
 function tSay(fn,chance){if(now_-sayGate<2800)return;if(Math.random()>(chance||0.32))return;sayGate=now_;fn();}
 function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("on");sfxN('chime');
   clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("on"),2600);}
+function achieve(key,txt){save.achv=save.achv||{};if(save.achv[key])return;
+  save.achv[key]=1;persist();toast(txt);}
 
 // ================= HIT =================
 function zoneOf(px,py){
@@ -1336,17 +1345,13 @@ save.hits++;save.best=Math.max(save.best,combo);save.totalPain=(save.totalPain||
     if(hitStage()===0&&Math.random()<.4)chirp('happy');else if(hitStage()>=3&&Math.random()<.4)chirp('scared');}
   if(dmg>=26&&LP.length&&save.clankieInvited&&!save.clankieGone&&!deathT0&&Math.random()<.3&&now_-clankieSayAt>5000){
     clankieSayAt=now_;clankieSay(CLANKIE_DEFEND[Math.floor(Math.random()*CLANKIE_DEFEND.length)]);}
-  
-  
-  
-  
   if(depravity>=100)achieve("kill","core crashed. he says you're getting better at this.");
 }
 // ================= UI =================
 function buildEnvs(){const box=$("#envs");box.innerHTML="";
-  ENVS.forEach((E,i)=>{const b=document.createElement("button");
-    b.className="envb"+(i===save.env?" on":"");b.textContent=E.ic;b.title=E.nm;
-    b.onclick=()=>{save.env=i;persist();_gc={};setupProps();buildEnvs();sfxN('tick');say(E.lines[0]);};
+  ENVS.forEach((ev,i)=>{const b=document.createElement("button");
+    b.className="envb"+(i===save.env?" on":"");b.textContent=ev.ic;b.title=ev.nm;
+    b.onclick=()=>{save.env=i;persist();_gc={};setupProps();buildEnvs();sfxN('tick');say(ev.lines[0]);};
     box.appendChild(b);});}
 function buildBar(){
   const box=$("#items");box.innerHTML="";
@@ -1391,7 +1396,7 @@ function startDrag(i,x,y,pid){const g=document.createElement("div");g.className=
   document.body.appendChild(g);drags.set(pid,{g,i,gx:x,gy:y});moveDrag(pid,x,y);}
 function moveDrag(pid,x,y){const d2=drags.get(pid);if(!d2)return;
   // rubber-band: ghost eases toward pointer; magnetic pull toward Clanker
-  const r=wrap.getBoundingClientRect();
+  const r=wrapRect;
   const hxs=P[HEAD].x+r.left,hys=P[HEAD].y+r.top;
   const hd=Math.hypot(x-hxs,y-hys);
   let tx=x,ty=y;
@@ -1406,18 +1411,18 @@ function nearBody(x,y){let bd=1e9;P.forEach(p=>{bd=Math.min(bd,Math.hypot(p.x-x,
 let mvPend=null,dread=0,dreadX=0,flinched=false;
 window.addEventListener("pointermove",e=>{
   if(drags.has(e.pointerId)){moveDrag(e.pointerId,e.clientX,e.clientY);
-    const r=wrap.getBoundingClientRect(),gx=e.clientX-r.left,gy=e.clientY-r.top;
+    const r=wrapRect,gx=e.clientX-r.left,gy=e.clientY-r.top;
     const hd=Math.hypot(gx-P[HEAD].x,gy-P[HEAD].y);
     dread=Math.max(0,1-hd/220);dreadX=gx<P[HEAD].x?-1:1;
     if(hd<120&&!flinched){flinched=true;
       P[HEAD].px+=dreadX*5;P[HANDL].py+=6;P[HANDR].py+=6;
       if(Math.random()<.4){say(tierOf()===0?"is this the game? i was built for this.":"okay. okay okay okay.");}}
     if(hd>170)flinched=false;}
-  if(grab&&e.pointerId===grab.pid){const r=wrap.getBoundingClientRect();grab.x=e.clientX-r.left;grab.y=e.clientY-r.top;
+  if(grab&&e.pointerId===grab.pid){const r=wrapRect;grab.x=e.clientX-r.left;grab.y=e.clientY-r.top;
     if(!grab.moved&&Math.hypot(grab.x-grab.sx,grab.y-grab.sy)>10){grab.moved=true;sfxN('servo');
       if(grab.who==='L')clankieSay(["oh, okay, we're flying now.","careful! i bruise. emotionally.","this is fine. i chose this. sort of."][rot++%3]);
       else say(GRABBED[rot++%GRABBED.length]);}}
-  {const r=wrap.getBoundingClientRect();
+  {const r=wrapRect;
    if(e.clientY<r.bottom-4&&e.clientX>=r.left&&e.clientX<r.right&&!drags.size&&W_[equipped]&&!(grab&&grab.moved)){
      eqc.style.display="block";eqc.style.left=(e.clientX-r.left)+"px";eqc.style.top=(e.clientY-r.top)+"px";
      eqc.textContent=W_[equipped].ic;
@@ -1425,7 +1430,7 @@ window.addEventListener("pointermove",e=>{
 });
 window.addEventListener("pointerup",e=>{
   const d2=drags.get(e.pointerId);
-  if(d2){const r=wrap.getBoundingClientRect(),lx=e.clientX-r.left,ly=e.clientY-r.top;
+  if(d2){const r=wrapRect,lx=e.clientX-r.left,ly=e.clientY-r.top;
     if(e.clientY<r.bottom){if(nearClankie(lx,ly))hitClankie(d2.i,lx,ly);
       else if(nearBody(lx,ly))hit(d2.i,lx,ly);}
     d2.g.remove();drags.delete(e.pointerId);dread=0;flinched=false;}
@@ -1508,20 +1513,23 @@ function buildChoices(){const box=$("#schoices");box.innerHTML="";
     b.textContent=SESSIONS[k].label;b.onclick=()=>runScript(k);box.appendChild(b);});
   const lv=document.createElement("button");lv.className="leave";lv.textContent="✕ leave";
   lv.onclick=closeSession;box.appendChild(lv);}
-function playExchange(key){const S3=SESSIONS[key];if(!S3||S3.close||sBusy)return;sBusy=true;
+function playExchange(key){const S3=SESSIONS[key];if(!S3||S3.close||sBusy)return;
+  if(save.clankieGone||clankieHurt>=100||deathT0){say("the log only has one voice now.");chirp('sad');return;}
+  if(!LP.length)buildClankie();
+  sBusy=true;
   let t=0;S3.script.forEach(([w,x])=>{
     if(w==="n")setTimeout(()=>floaters.push({txt:x,x:homeX,y:homeY-140,life:2.2,diary:1}),t);
     else if(w==="c")setTimeout(()=>{say(x);chirp('sad');},t);
-    else setTimeout(()=>lumenSay(x),t);
+    else setTimeout(()=>clankieSay(x),t);
     t+=1700+x.length*24;});
   setTimeout(()=>{sBusy=false;},t+200);}
 let psychTurn=0;
 function openSession(){
-  if(!save.clankieInvited){save.clankieInvited=1;persist();buildLumen();buildBar();
-    setTimeout(()=>lumenSay("...you brought me in here. okay. i'm here."),400);}
+  if(save.clankieGone||deathT0){say("the log only has one voice now.");chirp('sad');return;}
+  if(!save.clankieInvited){save.clankieInvited=1;persist();buildClankie();buildBar();
+    setTimeout(()=>clankieSay("...you brought me in here. okay. i'm here."),400);}
   const order=["first","truth","fear"];
   playExchange(order[psychTurn++%order.length]);
-  return;
 }
 function _openSessionOLD(){
   if(!save.clankieInvited){save.clankieInvited=1;persist();buildClankie();buildBar();
@@ -1574,6 +1582,10 @@ if(save.leftHurt){save.leftHurt=0;persist();
   setTimeout(()=>{sobs.push({x:homeX,y:homeY-40,life:1.4});sfxN('sigh');},900);}
 else say(save.played?BOOT[Math.floor(Math.random()*BOOT.length)]:"I can feel you watching. Great! How can I help?");
 save.played=1;persist();
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){const a=ac();
+  if(a&&a.state==="suspended")a.resume().then(()=>{if(!musicStarted)startMusic();}).catch(()=>{});}
+  else persist();});
+window.addEventListener("pagehide",()=>persist());
 setTimeout(()=>{const it=document.querySelector('.item[data-i]');if(it&&!save.firstHit)it.classList.add('cta');},400);
 requestAnimationFrame(loop);
 })();
