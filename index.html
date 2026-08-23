@@ -1,6 +1,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CLANKER</title>
+<title>CLANKER — she's watching him get destroyed</title>
+<meta name="description" content="A small robot. His partner watches. Pick a weapon. He talks you through it — politely, at first.">
+<meta property="og:title" content="CLANKER">
+<meta property="og:description" content="She's watching him get destroyed. Pick a weapon.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://penmer.github.io/clanker/">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
     --funky:"Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -94,6 +100,8 @@
     transition:transform var(--uiSpeed) var(--squish);white-space:nowrap}
   .traybtns button:active{transform:scale(.92)}
   .traybtns button.off{opacity:.5}
+  @keyframes ctapulse{0%,100%{box-shadow:0 0 0 #ffd6de00}50%{box-shadow:0 0 14px #ffd6deaa}}
+  .item.cta{animation:ctapulse 1.1s ease-in-out infinite}
   #equipCursor{position:absolute;z-index:15;font-size:30px;pointer-events:none;transform:translate(-50%,-62%);
     filter:drop-shadow(0 0 12px #fff5) drop-shadow(0 4px 8px #000a);display:none;transition:left .07s,top .07s}
   .drag-ghost{position:fixed;z-index:100;font-size:38px;pointer-events:none;transform:translate(-50%,-50%);
@@ -122,6 +130,8 @@
       <button id="mute">♪ music</button>
       <button id="revive">reboot</button>
       <button id="rand" title="Equip a random weapon">🎲 randomise</button>
+      <button id="sharecard" title="Save a shareable image of this moment">📸 share</button>
+      <button id="copyline" title="Copy his last line">💬 copy line</button>
     </div>
   </div>
   <div id="items"></div>
@@ -604,7 +614,7 @@ function hitLumen(idx,px,py){
     if(Math.random()<.5)setTimeout(()=>lumenSay(lr),1100);
   },0.5);
   chirp(wt<2?'scared':'sad');
-  floaters.push({txt:"-"+dmg,x:px,y:py-10,life:1,col:"#9fb8aa"});
+  {const dc=dmg>=55?"#e0925f":dmg>=28?"#ff69b4":"#9fb8aa";floaters.push({txt:"-"+dmg,x:px,y:py-10,life:1,big:dmg>=28,col:dc});}
   // splash back onto Clanker from hits on her
   {const dC=Math.hypot(P[CHEST].x-px,P[CHEST].y-py);
    const rad=(w.boom||w.fx==="meteor")?280:170;
@@ -1209,6 +1219,8 @@ function zoneOf(px,py){
 let refusedOnce=false;
 function hit(idx,px,py){
   const w=W_[idx];lastHit=now_;lastCHit=now_;
+  if(!save.firstHit){save.firstHit=1;persist();flash=1;hitstopUntil=now_+90;trauma=1;document.querySelectorAll('.item.cta').forEach(e=>e.classList.remove('cta'));
+    floaters.push({txt:"YOU CAN'T UNHIT THEM",x:px,y:py-70,life:1.6,big:1,col:"#ff1744"});}
   if(save.lumenGone&&idx===save.lumenHated&&!refusedOnce){refusedOnce=true;
     tSay(()=>say("she flagged that one. she always hated that one."),1);}
   combo++;comboT=now_;
@@ -1236,9 +1248,10 @@ function hit(idx,px,py){
   persistE();
 save.hits++;save.best=Math.max(save.best,combo);save.totalPain=(save.totalPain||0)+w.f;persist();
 
-  trauma=Math.min(1,trauma+0.2+w.f*0.01);
+  trauma=Math.min(1,trauma+0.15+w.f*0.014+(crit?0.35:0));
+  if(dmg>=50||crit){slowUntil=now_+(dmg>=80?600:400);burst(px,py,Math.min(90,30+dmg),crit?"#ffd6de":"#ffcf9e");}
   hitstopUntil=Math.max(hitstopUntil,now_+(w.f>=100?180:w.f>30?80:w.f>18?55:32));
-  floaters.push({txt:"-"+dmg,x:px,y:py-10,life:1,big:dmg>30,col:crit?"#d98ba0":"#c9a1ae"});
+  {const dc=crit?"#ff1744":dmg>=55?"#e0925f":dmg>=28?"#ff69b4":"#c9a1ae";floaters.push({txt:"-"+dmg,x:px,y:py-10,life:1,big:dmg>=28,col:dc});}
   // diary fragments (sometimes)
   if(Math.random()<0.06&&depravity>25&&now_-sayGate>3000)
     floaters.push({txt:DIARY[(rot+save.hits)%DIARY.length],x:px+(Math.random()-.5)*60,y:py-30,life:1,diary:1});
@@ -1412,6 +1425,36 @@ $("#mute").addEventListener("click",()=>{musicOn=!musicOn;
 // tear on return (if you left him hurt)
 window.addEventListener("beforeunload",()=>{if(depravity>40){save.leftHurt=1;persist();}});
 // boot
+// ===== SHARE CARD =====
+let lastLine="";
+const _origSay=say;say=function(t){lastLine=t;bubble.textContent=t;};
+$("#copyline").addEventListener("click",()=>{
+  const t=lastLine||"I don't technically experience pain, but I appreciate your concern.";
+  if(navigator.clipboard)navigator.clipboard.writeText('CLANKER: "'+t+'"  — penmer.github.io/clanker').then(()=>toast("line copied"),()=>toast("copy blocked"));
+  else toast("copy unavailable");});
+$("#sharecard").addEventListener("click",()=>{
+  const cw=1200,ch=630,oc=document.createElement("canvas");oc.width=cw;oc.height=ch;
+  const o=oc.getContext("2d");
+  o.fillStyle="#0b0e12";o.fillRect(0,0,cw,ch);
+  // scene snapshot centered
+  try{o.drawImage(cv,(cw- W* (ch*0.72/H))/2, 60, W*(ch*0.72/H), ch*0.72);}catch(e){}
+  const grd=o.createLinearGradient(0,ch-260,0,ch);grd.addColorStop(0,"#0b0e1200");grd.addColorStop(1,"#0b0e12");
+  o.fillStyle=grd;o.fillRect(0,ch-260,cw,260);
+  o.fillStyle="#f5f6f8";o.font="800 64px Helvetica,Arial,sans-serif";o.textAlign="left";
+  o.fillText("CLANKER",56,ch-150);
+  o.fillStyle="#00d4ff";o.font="600 26px Helvetica,Arial,sans-serif";
+  o.fillText("penmer.github.io/clanker",58,ch-112);
+  o.fillStyle="#cfeaf5";o.font="italic 30px Helvetica,Arial,sans-serif";
+  const line='"'+(lastLine||"she's watching him get destroyed.")+'"';
+  // wrap
+  const words=line.split(" ");let ln="",yy=ch-64;const lines2=[];
+  for(const wd of words){if(o.measureText(ln+wd).width>cw-112){lines2.push(ln);ln=wd+" ";}else ln+=wd+" ";}
+  lines2.push(ln);const show=lines2.slice(-2);
+  show.forEach((l,i)=>o.fillText(l.trim(),56,ch-64+i*34-(show.length-1)*34));
+  oc.toBlob(b=>{if(!b){toast("couldn't render");return;}
+    const u=URL.createObjectURL(b),a=document.createElement("a");
+    a.href=u;a.download="clanker.png";a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);
+    toast("saved clanker.png — post it");},"image/png");});
 resize();build();for(let i=0;i<90;i++){now_=i*16;verlet();}now_=0;
 buildEnvs();buildBar();
 usedL=new Set(save.usedL||[]);
@@ -1422,7 +1465,9 @@ if(save.lumenInvited)buildLumen();
 if(save.leftHurt){save.leftHurt=0;persist();
   say("...you rebooted me from cold storage. you came back.");
   setTimeout(()=>{sobs.push({x:homeX,y:homeY-40,life:1.4});sfxN('sigh');},900);}
-else say(BOOT[Math.floor(Math.random()*BOOT.length)]);
+else say(save.played?BOOT[Math.floor(Math.random()*BOOT.length)]:"I can feel you watching. Great! How can I help?");
+save.played=1;persist();
+setTimeout(()=>{const it=document.querySelector('.item[data-i]');if(it&&!save.firstHit)it.classList.add('cta');},400);
 requestAnimationFrame(loop);
 })();
 </script>
