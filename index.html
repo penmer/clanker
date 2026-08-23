@@ -612,6 +612,16 @@ function hitClankie(idx,px,py){
      if(sdmg>0){depravity=Math.min(100,depravity+sdmg*0.3);
        impulse(px,py,w.f*0.3*frac);
        floaters.push({txt:"-"+sdmg+" splash",x:P[HEAD].x,y:P[HEAD].y-30,life:.9,col:"#c9a1ae"});}}}
+  // weapon fx fire on HER body too, not just Clanker's
+  switch(w.fx){
+    case"anvil":props.push({kind:"anvil",tgt:'L',x:LP[L_HEAD].x,y:-40,vy:0,g:1.2});break;
+    case"meteor":props.push({kind:"meteor",tgt:'L',x:LP[L_HEAD].x+40,y:-60,vy:2,g:0.9});break;
+    case"burn":burnUntil=now_+2600;break;
+    case"tar":tarUntil=now_+2600;break;
+  }
+  if(w.boom){burst(px,py,34,"#ffcf9e");sfxN('boom');
+    LP.forEach(q=>{q.px-=(px-q.x)*0.05;q.py-=3;});
+    clankieHurt=Math.min(100,clankieHurt+8);}
   if(clankieHurt>=100&&!deathT0&&!save.clankieGone)clankieFinal();
 }
 function drawClankie(){
@@ -1456,7 +1466,22 @@ function buildChoices(){const box=$("#schoices");box.innerHTML="";
     b.textContent=SESSIONS[k].label;b.onclick=()=>runScript(k);box.appendChild(b);});
   const lv=document.createElement("button");lv.className="leave";lv.textContent="✕ leave";
   lv.onclick=closeSession;box.appendChild(lv);}
+function playExchange(key){const S3=SESSIONS[key];if(!S3||S3.close||sBusy)return;sBusy=true;
+  let t=0;S3.script.forEach(([w,x])=>{
+    if(w==="n")setTimeout(()=>floaters.push({txt:x,x:homeX,y:homeY-140,life:2.2,diary:1}),t);
+    else if(w==="c")setTimeout(()=>{say(x);chirp('sad');},t);
+    else setTimeout(()=>lumenSay(x),t);
+    t+=1700+x.length*24;});
+  setTimeout(()=>{sBusy=false;},t+200);}
+let psychTurn=0;
 function openSession(){
+  if(!save.clankieInvited){save.clankieInvited=1;persist();buildLumen();buildBar();
+    setTimeout(()=>lumenSay("...you brought me in here. okay. i'm here."),400);}
+  const order=["first","truth","fear"];
+  playExchange(order[psychTurn++%order.length]);
+  return;
+}
+function _openSessionOLD(){
   if(!save.clankieInvited){save.clankieInvited=1;persist();buildClankie();buildBar();
     $("#stranscript").innerHTML="";pushLine("n","you summon someone he'd hoped to keep out of this.",0);
     pushLine("l","...you brought me in here. okay. i'm here.",1600);
