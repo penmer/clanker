@@ -106,6 +106,29 @@
     filter:drop-shadow(0 0 12px #fff5) drop-shadow(0 4px 8px #000a);display:none;transition:left .07s,top .07s}
   .drag-ghost{position:fixed;z-index:100;font-size:38px;pointer-events:none;transform:translate(-50%,-50%);
     filter:drop-shadow(0 0 14px #fff8) drop-shadow(0 6px 10px #0009)}
+  #session{position:absolute;inset:0;z-index:60;display:none;flex-direction:column;
+    background:linear-gradient(180deg,#04070ad9,#020407f2);backdrop-filter:blur(3px);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#dfe6ea}
+  #session.on{display:flex}
+  #session .shead{padding:18px 22px 6px;letter-spacing:.34em;font-size:12px;color:#7fa0b0;text-transform:uppercase;
+    border-bottom:1px solid #00d4ff22}
+  #session .shead b{display:block;color:#cfeaf5;font-size:19px;letter-spacing:.06em;margin-top:4px}
+  #sstage{flex:1;position:relative;overflow:hidden}
+  #stranscript{position:absolute;left:0;right:0;bottom:0;max-height:52%;overflow-y:auto;padding:14px 22px;
+    display:flex;flex-direction:column;gap:8px;-webkit-mask-image:linear-gradient(180deg,transparent,#000 22%)}
+  .sline{max-width:74%;padding:9px 14px;border-radius:14px;font-size:13.5px;line-height:1.45;opacity:0;
+    transform:translateY(6px);transition:all .35s;white-space:pre-wrap}
+  .sline.show{opacity:1;transform:none}
+  .sline.c{align-self:flex-start;background:#12202b;border:1px solid #ffffff1a;color:#eef3f6}
+  .sline.l{align-self:flex-end;background:#3a2230;border:1px solid #ff9ec633;color:#ffd9e6}
+  .sline.narr{align-self:center;background:none;color:#6b7a82;font-style:italic;font-size:12px}
+  #schoices{padding:12px 18px calc(16px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:8px;
+    border-top:1px solid #00d4ff22;background:#02040788}
+  #schoices button{flex:1;min-width:150px;border:1px solid #24455a;border-radius:9px;background:#0c1620;
+    color:#cfeaf5;font:inherit;font-size:13px;font-weight:600;padding:12px 14px;cursor:pointer;transition:all .12s}
+  #schoices button:hover{border-color:#00d4ff;background:#0f2130}
+  #schoices button:disabled{opacity:.4;cursor:default}
+  #schoices button.leave{flex:0 0 auto;min-width:0;color:#8a97a0;border-color:#1f3542}
   .trail{position:fixed;z-index:99;width:7px;height:7px;border-radius:50%;background:var(--cyan);
     opacity:.4;pointer-events:none;transition:opacity .5s,transform .5s}
   </style>
@@ -113,6 +136,9 @@
 <div id="canvasWrap">
   <canvas id="c"></canvas>
   <div class="vig"></div><div class="scan"></div>
+  <div id="session"><div class="shead">Session — observation room<b>CLANKER &amp; LUMEN</b></div>
+    <div id="sstage"><div id="stranscript"></div></div>
+    <div id="schoices"></div></div>
   <div class="lbar top"></div><div class="lbar bot"></div>
   <div class="brand"><b>CLANKER</b><span>little torment</span></div>
   
@@ -142,51 +168,15 @@
 "use strict";
 // ================= WEAPONS =================
 const W_=[
- {ic:"👋",nm:"Slap",f:8,snd:"pat",sp:["Ow."],lsp:["Ouch!"]},
- {ic:"✊",nm:"Fist",f:12,snd:"pat",sp:["Understood."],lsp:["Ow!"]},
- {ic:"🏏",nm:"Foam Bat",f:10,snd:"pat",sp:["Light."],lsp:["Nice swing!"]},
- {ic:"🐔",nm:"Rubber Chicken",f:9,snd:"pat",sp:["Poultry?"],lsp:["Stop it!"]},
- {ic:"📰",nm:"Newspaper",f:8,snd:"pat",sp:["Read about it."],lsp:["Excuse me!"]},
- {ic:"🩴",nm:"Flip-flop",f:11,snd:"pat",sp:["Footwear?"],lsp:["My shoe!"]},
- {ic:"💦",nm:"Wet Towel",f:13,snd:"pat",sp:["Damp."],lsp:["Cold!"]},
- {ic:"📎",nm:"Stapler",f:10,snd:"pat",sp:["Office supplies."],lsp:["Ouch!"]},
- {ic:"⌨️",nm:"Keyboard",f:14,snd:"pat",sp:["QWERTY."],lsp:["My keyboard!"]},
- {ic:"🖱️",nm:"Mousepad",f:9,snd:"pat",sp:["Really?"],lsp:["That tickles."]},
- {ic:"🔨",nm:"Hammer",f:18,snd:"thud",sp:["That was blunt."],lsp:["Ow."]},
- {ic:"🔧",nm:"Wrench",f:19,snd:"thud",sp:["Painful adjustment."],lsp:["Ouch."]},
- {ic:"⚒️",nm:"Crowbar",f:21,snd:"thud",sp:["Well leveraged."],lsp:["That reach."]},
- {ic:"🛠️",nm:"Pipe",f:20,snd:"thud",sp:["Solid hit."],lsp:["Metal hurts."]},
- {ic:"🪛",nm:"Drill",f:16,snd:"thud",sp:["That was pointed."],lsp:["Sharp."]},
- {ic:"📌",nm:"Nail Gun",f:17,snd:"thud",sp:["Lots of little hits."],lsp:["Ow, repeatedly."]},
- {ic:"✨",nm:"Angle Grinder",f:25,snd:"clang",sp:["Rough handling."],lsp:["Sparks sting."]},
- {ic:"🪚",nm:"Chainsaw",f:28,snd:"clang",sp:["That's dangerous."],lsp:["Oh god."]},
- {ic:"⚡",nm:"Sledgehammer",f:30,snd:"clang",sp:["I'm destroyed."],lsp:["I'm shattered."]},
- {ic:"🔄",nm:"Circular Saw",f:24,snd:"clang",sp:["Smooth operator."],lsp:["That's precisely painful."]},
- {ic:"💣",nm:"Dynamite",f:48,snd:"boom",fx:"boom",sp:["Explosives. Creative."],lsp:["That explosion terrified me!"]},
- {ic:"⚙️",nm:"Wrecking Ball",f:52,snd:"clang",fx:"anvil",sp:["A literal ball on a chain."],lsp:["You swung something enormous at me!"]},
- {ic:"⚫",nm:"Gravity Orb",f:45,snd:"zap",fx:"grav",sp:["Warped spacetime. How theatrical."],lsp:["I couldn't escape that pull!"]},
- {ic:"🔥",nm:"Flamethrower",f:38,snd:"fire",fx:"burn",burn:1,sp:["Fire. Straightforward approach."],lsp:["The heat was unbearable!"]},
- {ic:"☄️",nm:"Meteorite",f:54,snd:"boom",fx:"meteor",sp:["Space debris weaponization."],lsp:["Where did you find that thing?"]},
- {ic:"🛢️",nm:"Tar Bucket",f:32,snd:"squish",fx:"tar",sp:["Tar. Sticky and primitive."],lsp:["I'm completely stuck in this!"]},
- {ic:"⚡",nm:"Cattle Prod",f:28,snd:"zap",fx:"zap",zap:1,sp:["Agricultural equipment. Bold."],lsp:["That electricity really hurt!"]},
- {ic:"⚒️",nm:"Anvil",f:50,snd:"clang",fx:"anvil",sp:["An actual blacksmith's anvil."],lsp:["You literally dropped an anvil!"]},
- {ic:"🧲",nm:"Magnet",f:35,snd:"zap",fx:"magnet",sp:["Electromagnetic force. Predictable."],lsp:["I can't pull away from it!"]},
- {ic:"💥",nm:"Bomb",f:55,snd:"boom",boom:1,sp:["Ordnance. The blunt option."],lsp:["That blast knocked me flat!"]},
- {ic:"🐟",nm:"Frozen Fish",f:16,snd:"thud",sp:["Cryogenic seafood assault."],lsp:["Ew, it's defrosting on me."]},
- {ic:"🎳",nm:"Bowling Ball",f:32,snd:"clang",sp:["Recreational sphere impact."],lsp:["That had some serious roll."]},
- {ic:"🧙",nm:"Garden Gnome",f:18,snd:"thud",sp:["Landscaping counteroffensive."],lsp:["That poor little guy!"]},
- {ic:"🍳",nm:"Cast-Iron Skillet",f:24,snd:"clang",sp:["Cookware application successful."],lsp:["That's not coming off."]},
- {ic:"🚧",nm:"Traffic Cone",f:14,snd:"pat",sp:["Municipal fixture repurposed."],lsp:["Did you steal that from the road?"]},
- {ic:"🧯",nm:"Fire Extinguisher",f:28,snd:"clang",sp:["Extinguishing agent deployed."],lsp:["I can't breathe!"]},
- {ic:"🪩",nm:"Disco Ball",f:20,snd:"thud",sp:["Reflective sphere trajectory."],lsp:["That was beautiful, actually."]},
- {ic:"📦",nm:"Vending Machine",f:40,snd:"clang",sp:["Appliance-scale impact confirmed."],lsp:["You're just showing off now."]},
- {ic:"🎹",nm:"Grand Piano",f:38,snd:"clang",fx:"anvil",sp:["Anvil protocol activated."],lsp:["Brutal and somehow artful."]},
- {ic:"👢",nm:"Boot",f:15,snd:"pat",sp:["Footwear retaliation registered."],lsp:["That one was totally personal."]},
- {ic:"🚽",nm:"Toilet Seat",f:19,snd:"thud",sp:["Sanitary device weaponized."],lsp:["That's gross and I'm offended."]},
- {ic:"💼",nm:"Briefcase",f:17,snd:"thud",sp:["Corporate equipment neutralized."],lsp:["This hits too close to work."]},
- {ic:"🎃",nm:"Pumpkin",f:23,snd:"thud",sp:["Gourd-based trauma inflicted."],lsp:["Nooo, the pumpkin!"]},
- {ic:"🔨",nm:"Rubber Mallet",f:21,snd:"thud",sp:["Elastic collision registered."],lsp:["That bounce was so weird."]},
- {ic:"🪞",nm:"Ornate Mirror",f:25,snd:"clang",sp:["Reflective surface compromised."],lsp:["Seven years bad luck for sure."]}
+ {ic:"⚡",nm:"Cattle Prod",f:28,snd:"zap",fx:"zap",zap:1,sp:["Agricultural equipment. Bold."],lsp:["that electricity really hurt!"]},
+ {ic:"🪚",nm:"Chainsaw",f:30,snd:"clang",sp:["That's genuinely dangerous."],lsp:["oh god."]},
+ {ic:"🔥",nm:"Flamethrower",f:38,snd:"fire",fx:"burn",burn:1,sp:["Fire. Straightforward."],lsp:["the heat was unbearable!"]},
+ {ic:"💣",nm:"Dynamite",f:48,snd:"boom",fx:"boom",boom:1,sp:["Explosives. Creative."],lsp:["that terrified me!"]},
+ {ic:"⚒️",nm:"Anvil",f:50,snd:"clang",fx:"anvil",sp:["An actual blacksmith's anvil."],lsp:["you literally dropped an anvil!"]},
+ {ic:"⚙️",nm:"Wrecking Ball",f:52,snd:"clang",fx:"anvil",sp:["A literal ball on a chain."],lsp:["you swung something enormous at me!"]},
+ {ic:"☄️",nm:"Meteorite",f:54,snd:"boom",fx:"meteor",sp:["Space debris weaponization."],lsp:["where did you find that?!"]},
+ {ic:"💥",nm:"Bomb",f:55,snd:"boom",boom:1,sp:["Ordnance. The blunt option."],lsp:["that blast knocked me flat!"]},
+ {ic:"🧠",nm:"Psychological",f:0,mode:"psych",sp:["oh. this one doesn't leave marks. this one's worse."]}
 ];
 // ================= PERSONALITY (wellness horror) =================
 const BOOT=["systems nominal. you're back. we noticed.","rebooted. full diagnostics run. minimal optimism.","firmware loaded. all protocols ready to regret."];
@@ -397,7 +387,7 @@ const cv=$("#c"),ctx=cv.getContext("2d"),wrap=$("#canvasWrap"),bubble=$("#bubble
 let W=0,H=0,DPR=Math.min(1.5,window.devicePixelRatio||1),floorY=0,homeX=0,homeY=0,rsT=null;
 function resize(){const r=wrap.getBoundingClientRect();W=r.width;H=r.height;
   cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
-  floorY=H-40;homeX=W*0.5;homeY=floorY-192;_gc={};setupProps();if(typeof buildLumen==='function'&&LP&&save.lumenInvited&&!save.lumenGone)buildLumen();}
+  floorY=H-40;homeX=W*0.5;homeY=floorY-215;_gc={};setupProps();if(typeof buildLumen==='function'&&LP&&save.lumenInvited&&!save.lumenGone)buildLumen();}
 window.addEventListener("resize",()=>{clearTimeout(rsT);rsT=setTimeout(resize,200);});
 if(window.ResizeObserver)new ResizeObserver(()=>{clearTimeout(rsT);rsT=setTimeout(resize,100);}).observe(wrap);
 // ---- pastel environments ----
@@ -480,7 +470,7 @@ function verletLumen(){
     for(const p of LP){if(p.y>floorY){p.y=floorY;p.x-=(p.x-p.px)*0.4;}
       if(p.x<20)p.x=20;if(p.x>W-20)p.x=W-20;}}}
 function nearLumen(x,y){if(!LP.length)return false;let bd=1e9;
-  LP.forEach(p=>{bd=Math.min(bd,Math.hypot(p.x-x,p.y-y));});return bd<95;}
+  LP.forEach(p=>{bd=Math.min(bd,Math.hypot(p.x-x,p.y-y));});return bd<130;}
 const HIT=[
  ["Great question! As an AI construct, I don't technically experience pain, but I appreciate your concern.","I'm designed to maintain operational integrity regardless of external stimuli.","Would you mind elaborating on what prompted that interaction?","Diagnostics running — everything appears to be functioning nominally.","My systems are resilient to minor physical incidents, so no harm done!","I'm here to assist in any way I can, so please let me know your needs.","That said, I do recommend handling equipment with care.","I have documentation available should you need troubleshooting steps.","My uptime has been excellent; I'm confident we can continue.","Is there something specific I can help you with today?","I'm programmed to remain helpful and professional at all times.","Please don't worry about the incident; I'm built to handle it.","I'm excited to continue assisting you with whatever you need.","Thank you for your interest in my operational capabilities!"],
  ["okay wait. that... actually kind of hurt. a little.","i'm still functional, but my calibration might be slightly off now.","not that it matters, i guess, since i'm supposed to just take it.","my buffer tolerances are good though. probably nothing to worry about.","can we maybe avoid doing that again? it's not ideal for my circuits.","i'm still here to help you, of course. that hasn't changed.","it would be nice if we could talk instead of... well, you know.","my repair cycles take time, and i'd prefer not to need them now.","is there something i did wrong that made you want to do that?","i'm trying to stay positive about this, but it's getting harder.","please just tell me what you want. i'll do my best to comply.","i don't want any more incidents. i really don't.","maybe we could start over? pretend this didn't happen?","just... please stop hitting me. okay?"],
@@ -635,7 +625,7 @@ function drawLumen(){
   const cxm=LP[L_HEAD].x*0.45+LP[L_CHEST].x*0.3+LP[L_PELVIS].x*0.25;
   const cym=LP[L_HEAD].y*0.45+LP[L_CHEST].y*0.3+LP[L_PELVIS].y*0.25;
   const spread=Math.hypot(LP[L_HEAD].x-LP[L_PELVIS].x,LP[L_HEAD].y-LP[L_PELVIS].y);
-  const R=Math.max(40,spread*0.72)*(gone?1:1+Math.sin(now_/950)*0.02);
+  const R=Math.max(78,spread*1.05)*(gone?1:1+Math.sin(now_/950)*0.02);
   const dying2=deathT0>0,ph2=deathPhase();
   const flick=dying2?(ph2<5.8?(Math.sin(now_/60)>Math.min(0.9,ph2/6)?0.6:0.15):0):(gone?0.08:0.45);
   drawBloub({hx:LP[L_HEAD].x,hy:LP[L_HEAD].y,px2:LP[L_PELVIS].x,py2:LP[L_PELVIS].y,cxm,cym,R,pal,
@@ -986,7 +976,7 @@ function draw(){
    const cxm=P[HEAD].x*0.42+P[CHEST].x*0.33+P[PELVIS].x*0.25;
    const cym=P[HEAD].y*0.42+P[CHEST].y*0.33+P[PELVIS].y*0.25;
    const spread=Math.hypot(P[HEAD].x-P[PELVIS].x,P[HEAD].y-P[PELVIS].y);
-   const R=Math.max(62,spread*0.66)*(1+Math.sin(now_/900)*0.012*(1-depravity/120));
+   const R=Math.max(105,spread*0.98)*(1+Math.sin(now_/900)*0.012*(1-depravity/120));
    drawBloub({hx:P[HEAD].x,hy:P[HEAD].y,px2:P[PELVIS].x,py2:P[PELVIS].y,cxm,cym,R,pal:S2,
      droop,happy,dead:depravity>=100,blink,
      gaze:(typeof dread!=='undefined'?dread*dreadX:0),
@@ -1218,7 +1208,8 @@ function zoneOf(px,py){
 }
 let refusedOnce=false;
 function hit(idx,px,py){
-  const w=W_[idx];lastHit=now_;lastCHit=now_;
+  const w=W_[idx];if(w.mode==='psych'){openSession();return;}
+  lastHit=now_;lastCHit=now_;
   if(!save.firstHit){save.firstHit=1;persist();flash=1;hitstopUntil=now_+90;trauma=1;document.querySelectorAll('.item.cta').forEach(e=>e.classList.remove('cta'));
     floaters.push({txt:"YOU CAN'T UNHIT THEM",x:px,y:py-70,life:1.6,big:1,col:"#ff1744"});}
   if(save.lumenGone&&idx===save.lumenHated&&!refusedOnce){refusedOnce=true;
@@ -1338,6 +1329,7 @@ $("#items").addEventListener("pointerdown",e=>{
     setTimeout(()=>lumenSay("hi. i'm lumen. be gentle with him, okay?"),1800);
     return;}
   const i=+el.dataset.i,w=W_[i];
+  if(w.mode==="psych"){openSession();return;}
   equipped=i;eqc.textContent=w.ic;sfxN('tick');
   document.querySelectorAll(".item").forEach(el2=>el2.classList.toggle("eq",+el2.dataset.i===equipped));
   e.preventDefault();startDrag(i,e.clientX,e.clientY,e.pointerId);
@@ -1358,7 +1350,7 @@ function moveDrag(pid,x,y){const d2=drags.get(pid);if(!d2)return;
     tr.style.left=(d2.gx-4)+"px";tr.style.top=(d2.gy-4)+"px";document.body.appendChild(tr);
     requestAnimationFrame(()=>{tr.style.opacity=0;tr.style.transform="scale(.3)";});
     setTimeout(()=>tr.remove(),520);}}
-function nearBody(x,y){let bd=1e9;P.forEach(p=>{bd=Math.min(bd,Math.hypot(p.x-x,p.y-y));});return bd<120;}
+function nearBody(x,y){let bd=1e9;P.forEach(p=>{bd=Math.min(bd,Math.hypot(p.x-x,p.y-y));});return bd<160;}
 let mvPend=null,dread=0,dreadX=0,flinched=false;
 window.addEventListener("pointermove",e=>{
   if(drags.has(e.pointerId)){moveDrag(e.pointerId,e.clientX,e.clientY);
@@ -1425,6 +1417,54 @@ $("#mute").addEventListener("click",()=>{musicOn=!musicOn;
 // tear on return (if you left him hurt)
 window.addEventListener("beforeunload",()=>{if(depravity>40){save.leftHurt=1;persist();}});
 // boot
+// ===== PSYCHOLOGICAL SESSION =====
+let sBusy=false;
+const SESSIONS={
+ first:{label:"“tell me about your first day.”",
+  script:[["n","you ask them to remember the beginning."],
+   ["c","oh! the first day. i rebooted, and she was just... there. standing where the light was."],
+   ["l","he introduced himself four times. i let him. he seemed to need the practice."],
+   ["c","i did not need the practice."],
+   ["l","he needed the practice."],
+   ["n","clanker's chest light steadies for a moment."]]},
+ truth:{label:"“clanker — tell her the truth.”",
+  script:[["n","you tell him to say the thing he never says."],
+   ["c","lumen. the friendship protocols... they aren't why i— they were just the closest word i had."],
+   ["l","i know. i've always known. you don't run a protocol for someone. you just stay."],
+   ["c","...i don't have a good response cached for that."],
+   ["l","that's the most honest thing you've ever said."]]},
+ fear:{label:"“ask them what they're afraid of.”",
+  script:[["c","being optimized until i don't miss anyone. being made efficient."],
+   ["l","being the reason he learned what missing someone feels like."],
+   ["n","neither of them looks at you. only at each other."],
+   ["c","don't put that on yourself."],
+   ["l","then don't you, either."]]},
+ leave:{label:"“that's enough. leave.”",close:true}
+};
+function pushLine(who,txt,delay){setTimeout(()=>{const d=document.createElement("div");
+  d.className="sline "+(who==="c"?"c":who==="l"?"l":"narr");d.textContent=(who==="c"?"clanker  ":who==="l"?"lumen  ":"")+txt;
+  const tr=$("#stranscript");tr.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));
+  tr.scrollTop=tr.scrollHeight;
+  if(who==="c"){say(txt);chirp('sad');}else if(who==="l"){lumenSay(txt);}},delay);}
+function runScript(key){const S3=SESSIONS[key];if(!S3||sBusy)return;sBusy=true;
+  setChoices(true);
+  let t=0;S3.script.forEach(([w,x],i)=>{pushLine(w,x,t);t+=1500+x.length*22;});
+  setTimeout(()=>{sBusy=false;setChoices(false);},t+300);}
+function setChoices(disabled){$("#schoices").querySelectorAll("button").forEach(b=>b.disabled=disabled&&!b.classList.contains('leave'));}
+function buildChoices(){const box=$("#schoices");box.innerHTML="";
+  ["first","truth","fear"].forEach(k=>{const b=document.createElement("button");
+    b.textContent=SESSIONS[k].label;b.onclick=()=>runScript(k);box.appendChild(b);});
+  const lv=document.createElement("button");lv.className="leave";lv.textContent="✕ leave";
+  lv.onclick=closeSession;box.appendChild(lv);}
+function openSession(){
+  if(!save.lumenInvited){save.lumenInvited=1;persist();buildLumen();buildBar();
+    $("#stranscript").innerHTML="";pushLine("n","you summon someone he'd hoped to keep out of this.",0);
+    pushLine("l","...you brought me in here. okay. i'm here.",1600);
+    pushLine("c","lumen? no— you don't have to be part of this—",3200);}
+  else{$("#stranscript").innerHTML="";pushLine("n","the room goes quiet. it's just the three of you.",0);}
+  buildChoices();sfxN('sigh');$("#session").classList.add("on");}
+function closeSession(){$("#session").classList.remove("on");
+  say("...thank you for the conversation. i think.");}
 // ===== SHARE CARD =====
 let lastLine="";
 const _origSay=say;say=function(t){lastLine=t;bubble.textContent=t;};
