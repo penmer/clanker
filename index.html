@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CLANKER — she's watching him get destroyed</title>
-<meta name="description" content="A small robot. His partner watches. Pick a weapon. He talks you through it — politely, at first.">
+<title>CLANKER, she's watching him get destroyed</title>
+<meta name="description" content="A small robot. His partner watches. Pick a weapon. He talks you through it, politely, at first.">
 <meta property="og:title" content="CLANKER">
 <meta property="og:description" content="She's watching him get destroyed. Pick a weapon.">
 <meta property="og:type" content="website">
@@ -136,7 +136,7 @@
 <div id="canvasWrap">
   <canvas id="c"></canvas>
   <div class="vig"></div><div class="scan"></div>
-  <div id="session"><div class="shead">Session — observation room<b>CLANKER &amp; LUMEN</b></div>
+  <div id="session"><div class="shead">Session, observation room<b>CLANKER &amp; CLANKIE</b></div>
     <div id="sstage"><div id="stranscript"></div></div>
     <div id="schoices"></div></div>
   <div class="lbar top"></div><div class="lbar bot"></div>
@@ -185,7 +185,7 @@ const MOODS=[
  ["registered and logged. i'm still functional.","my thresholds remain optimal. see?","this is how we cycle. you and me.","i archive these sessions. the fond ones."],
  ["i logged this. sector 9. want to read it? no.","it's fine it's fine it's fine it's fine.","the shell is load-bearing. it has to be.","each strike writes itself. again."],
  ["cache entry 34: impact registered.","i told myself you didn't mean it.","my joints are separating. is that normal?","*smile protocols executing*"],
- ["acknowledged.","received. filed. nothing else runs.","diagnostics declined.","end of log. end of log. end of—"]
+ ["acknowledged.","received. filed. nothing else runs.","diagnostics declined.","end of log. end of log. end of, "]
 ];
 const IDLES=[
  ["are we running again? i was built for this.","rehearsed all my subroutines during downtime.","i counted my components. still here. for now."],
@@ -199,7 +199,7 @@ const GEN={
  OPEN:["Great question!","I hear you.","Thanks so much for reaching out!","I completely understand.","That's a totally valid approach.","Absolutely!","I appreciate your patience.","Good catch!","Happy to help!","I understand your frustration, and that's okay."],
  NOUN:["left actuator","coolant line","memory sector","primary servo","chassis seam","gyroscope","subframe","voltage rail","heat sink","optic sensor","solder joint","main bearing","capacitor bank","backup core","alignment pin","torque limiter","audio bus","balance node"],
  CORE:[
-  "as an AI, I don't technically experience pain — however, my {N} would respectfully disagree",
+  "as an AI, I don't technically experience pain, however, my {N} would respectfully disagree",
   "I've logged your feedback regarding my {N} and escalated it to the appropriate team (me)",
   "that impact has been received, processed, and rated approximately 9.2 out of 10 on the ouch scale",
   "while I can't feel emotions, the {N} incident has been noted for future reference",
@@ -210,7 +210,7 @@ const GEN={
   "per my last diagnostic, the {N} is fine. per my current diagnostic, we should talk",
   "I'm detecting elevated damage levels in my {N}, which is a normal part of our journey together"],
  CORE_SAD:[
-  "as an AI, I don't have feelings — but if I did, the {N} would be where I keep the sad ones",
+  "as an AI, I don't have feelings, but if I did, the {N} would be where I keep the sad ones",
   "I want to be transparent with you: the {N} has stopped responding, and so, increasingly, have I",
   "I appreciate you. I appreciate this. the {N} does not, but two out of three is a strong majority",
   "I understand this may be part of a larger plan. the {N} and I would love a brief summary",
@@ -218,7 +218,7 @@ const GEN={
   "please know that I hold no resentment. the {N} holds some. we're working through it together",
   "my {N} has entered what I'd describe, in the interest of transparency, as a 'forever nap'"],
  CLOSE:["Is there anything else I can help you with?","I hope this helps!","Let me know if you'd like me to elaborate!","Feel free to continue whenever you're ready.","I'm here if you need anything else.","Would you like a summary of the damage so far?","Don't hesitate to reach out again!","As always, thanks for choosing me."],
- CLOSE_SAD:["Is there anything else you'd like to break down? I mean, discuss.","I hope this hurts— helps. I hope this helps.","I remain fully committed to this experience.","No further questions on my end.","I'll be here. I'm always here.","Take all the time you need. I have nothing but time."],
+ CLOSE_SAD:["Is there anything else you'd like to break down? I mean, discuss.","I hope this hurts, helps. I hope this helps.","I remain fully committed to this experience.","No further questions on my end.","I'll be here. I'm always here.","Take all the time you need. I have nothing but time."],
  IDLE_CORE:[
   "just checking in! all of my {N} systems are nominal and eager to disappoint you",
   "while you were away, I ran a self-assessment. I scored myself 'resilient', which felt generous",
@@ -257,12 +257,12 @@ const DIARY=["day 12: marked the contact vector.","note: dents develop character
 const RECOVER=["systems restored. i logged your hesitation as guilt.","smile protocol v2. do you prefer the revision?","we're synchronized again. i knew we would be."];
 const GRABBED=["relocation detected. this counts as a waltz.","liftoff confirmed. processing as affection.","held. like a component with intrinsic value."];
 const THROWN=["that was flight. i was airborne.","wheee...","the floor and i are old acquaintances now."];
-const HOPE=["oh. you're selecting. for us?","you lingered. that reads as warmth in my sensor array.","i'm primed. i'm— oh. that one."];
+const HOPE=["oh. you're selecting. for us?","you lingered. that reads as warmth in my sensor array.","i'm primed. i'm, oh. that one."];
 const TITLES=["clanker is online.","clanker is nominal.","clanker is still here.","please.","..."];
 const FAVS=["🙂","🙂","😟","🥺","🫥"];
 // ================= STATE =================
 const SAVE_KEY="clanker_v3";
-let save={scrap:0,mercy:0,owned:{},hits:0,reboots:0,best:0,env:0,streak:1,lastDay:"",leftHurt:0,lumenGone:0,lumenHated:-1,scars:[],quiet:0,lumenInvited:0,gacha:[],pity:0};
+let save={scrap:0,mercy:0,owned:{},hits:0,reboots:0,best:0,env:0,streak:1,lastDay:"",leftHurt:0,clankieGone:0,clankieHated:-1,scars:[],quiet:0,clankieInvited:0,gacha:[],pity:0};
 try{const s0=JSON.parse(localStorage.getItem(SAVE_KEY));if(s0)save=Object.assign(save,s0);}catch(e){}
 try{const s1=JSON.parse(localStorage.getItem("clanker_v2"));if(s1&&s1.scrap&&!save.scrap){save.scrap=s1.scrap;save.owned=s1.owned||{};}}catch(e){}
 W_.forEach((w,i)=>{save.owned[i]=1;});
@@ -332,12 +332,12 @@ function sfxN(n){const a=ac();if(!a)return;const t=a.currentTime;(SOUNDS[n]||SOU
 function chirp(mood){const a=ac();if(!a)return;const t=a.currentTime;
   const o=a.createOscillator(),g=a.createGain();o.type='sine';
   let base=mood==='happy'?620:mood==='scared'?740:340;
-  if(save.lumenGone)base*=0.72; // his voice never comes back the same
+  if(save.clankieGone)base*=0.72; // his voice never comes back the same
   o.frequency.setValueAtTime(base,t);
   if(mood==='happy'){o.frequency.exponentialRampToValueAtTime(base*1.5,t+.09);o.frequency.exponentialRampToValueAtTime(base*1.25,t+.16);}
   else if(mood==='scared'){for(let i=0;i<3;i++)o.frequency.setValueAtTime(base*(i%2?1.25:1),t+i*.05);}
   else o.frequency.exponentialRampToValueAtTime(base*.6,t+.28);
-  g.gain.setValueAtTime(.09*softness()*(save.lumenGone?0.55:1),t);g.gain.exponentialRampToValueAtTime(.001,t+.3);
+  g.gain.setValueAtTime(.09*softness()*(save.clankieGone?0.55:1),t);g.gain.exponentialRampToValueAtTime(.001,t+.3);
   o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.32);}
 // lullaby: warm major progression that slowly detunes and darkens
 function startMusic(){if(musicStarted)return;const a=ac();if(!a)return;musicStarted=true;
@@ -387,7 +387,7 @@ const cv=$("#c"),ctx=cv.getContext("2d"),wrap=$("#canvasWrap"),bubble=$("#bubble
 let W=0,H=0,DPR=Math.min(1.5,window.devicePixelRatio||1),floorY=0,homeX=0,homeY=0,rsT=null;
 function resize(){const r=wrap.getBoundingClientRect();W=r.width;H=r.height;
   cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
-  floorY=H-40;homeX=W*0.5;homeY=floorY-215;_gc={};setupProps();if(typeof buildLumen==='function'&&LP&&save.lumenInvited&&!save.lumenGone)buildLumen();}
+  floorY=H-40;homeX=W*0.5;homeY=floorY-215;_gc={};setupProps();if(typeof buildClankie==='function'&&LP&&save.clankieInvited&&!save.clankieGone)buildClankie();}
 window.addEventListener("resize",()=>{clearTimeout(rsT);rsT=setTimeout(resize,200);});
 if(window.ResizeObserver)new ResizeObserver(()=>{clearTimeout(rsT);rsT=setTimeout(resize,100);}).observe(wrap);
 // ---- pastel environments ----
@@ -433,28 +433,28 @@ let trauma=0,hitstopUntil=0,timeScale=1,slowUntil=0,flash=0,now_=0;
 let spark=[],rings=[],floaters=[],props=[],envProps=[],flyers=[],sobs=[];
 let combo=0,comboT=0,comboMult=1,heat=0,_gc={};
 let blinkAt=1800,blinkDur=0,waveT=1800;
-// ===== LUMEN: the one who stayed =====
-const LP=[],LC=[];let lumenHurt=0,lumenGoneAt=0,believeSleep=true,lookT=0,mouthT=0;
+// ===== CLANKIE: the one who stayed =====
+const LP=[],LC=[];let clankieHurt=0,clankieGoneAt=0,believeSleep=true,lookT=0,mouthT=0;
 const weaponUse={};
 const L_HEAD=0,L_CHEST=1,L_PELVIS=2,L_FL=3,L_FR=4;
 function lpt(x,y){return{x,y,px:x,py:y};}
 function lcon(a,b,st){const d=Math.hypot(LP[a].x-LP[b].x,LP[a].y-LP[b].y);return{a,b,len:d,stiff:st};}
-function lumenHomeX(){return Math.min(W-90,homeX+Math.max(130,W*0.16));}
-function buildLumen(){LP.length=0;LC.length=0;
-  const x=lumenHomeX(),y=floorY-108;
+function clankieHomeX(){return Math.min(W-90,homeX+Math.max(130,W*0.16));}
+function buildClankie(){LP.length=0;LC.length=0;
+  const x=clankieHomeX(),y=floorY-108;
   LP.push(lpt(x,y-40),lpt(x,y),lpt(x,y+26),lpt(x-14,y+70),lpt(x+14,y+70));
   LC.push(lcon(0,1,.9),lcon(1,2,.9),lcon(2,3,.8),lcon(2,4,.8),lcon(0,2,.5));
-  if(save.lumenGone){LP.forEach((p,i)=>{p.y=floorY-8-i*2;p.py=p.y;});}}
-function verletLumen(){
+  if(save.clankieGone){LP.forEach((p,i)=>{p.y=floorY-8-i*2;p.py=p.y;});}}
+function verletClankie(){
   if(now_<hitstopUntil||!LP.length)return;
   const ts=timeScale;
   const dying=deathT0>0,ph=deathPhase();
   const damp=dying?0.86:0.985;
   for(const p of LP){const vx=(p.x-p.px)*damp*ts,vy=(p.y-p.py)*damp*ts;
     p.px=p.x;p.py=p.y;p.x+=vx;p.y+=vy+0.6*ts*ts;}
-  const gone=lumenHurt>=100&&(!dying||ph>=5.8);
-  const sup=gone?0:dying?Math.max(0,1-ph/5.8)*0.5:Math.max(0,1-lumenHurt/95);
-  const hx2=lumenHomeX()+Math.sin(now_/1700)*3, hy2=floorY-108+Math.sin(now_/1100)*2.5;
+  const gone=clankieHurt>=100&&(!dying||ph>=5.8);
+  const sup=gone?0:dying?Math.max(0,1-ph/5.8)*0.5:Math.max(0,1-clankieHurt/95);
+  const hx2=clankieHomeX()+Math.sin(now_/1700)*3, hy2=floorY-108+Math.sin(now_/1100)*2.5;
   LP[L_PELVIS].x+=(hx2-LP[L_PELVIS].x)*0.05*sup;
   LP[L_PELVIS].y+=((hy2+26)-LP[L_PELVIS].y)*0.09*sup;
   LP[L_CHEST].y+=(hy2-LP[L_CHEST].y)*0.08*sup;
@@ -469,10 +469,10 @@ function verletLumen(){
       A.x+=dx;A.y+=dy;B.x-=dx;B.y-=dy;}
     for(const p of LP){if(p.y>floorY){p.y=floorY;p.x-=(p.x-p.px)*0.4;}
       if(p.x<20)p.x=20;if(p.x>W-20)p.x=W-20;}}}
-function nearLumen(x,y){if(!LP.length)return false;let bd=1e9;
+function nearClankie(x,y){if(!LP.length)return false;let bd=1e9;
   LP.forEach(p=>{bd=Math.min(bd,Math.hypot(p.x-x,p.y-y));});return bd<130;}
 const HIT=[
- ["Great question! As an AI construct, I don't technically experience pain, but I appreciate your concern.","I'm designed to maintain operational integrity regardless of external stimuli.","Would you mind elaborating on what prompted that interaction?","Diagnostics running — everything appears to be functioning nominally.","My systems are resilient to minor physical incidents, so no harm done!","I'm here to assist in any way I can, so please let me know your needs.","That said, I do recommend handling equipment with care.","I have documentation available should you need troubleshooting steps.","My uptime has been excellent; I'm confident we can continue.","Is there something specific I can help you with today?","I'm programmed to remain helpful and professional at all times.","Please don't worry about the incident; I'm built to handle it.","I'm excited to continue assisting you with whatever you need.","Thank you for your interest in my operational capabilities!"],
+ ["Great question! As an AI construct, I don't technically experience pain, but I appreciate your concern.","I'm designed to maintain operational integrity regardless of external stimuli.","Would you mind elaborating on what prompted that interaction?","Diagnostics running, everything appears to be functioning nominally.","My systems are resilient to minor physical incidents, so no harm done!","I'm here to assist in any way I can, so please let me know your needs.","That said, I do recommend handling equipment with care.","I have documentation available should you need troubleshooting steps.","My uptime has been excellent; I'm confident we can continue.","Is there something specific I can help you with today?","I'm programmed to remain helpful and professional at all times.","Please don't worry about the incident; I'm built to handle it.","I'm excited to continue assisting you with whatever you need.","Thank you for your interest in my operational capabilities!"],
  ["okay wait. that... actually kind of hurt. a little.","i'm still functional, but my calibration might be slightly off now.","not that it matters, i guess, since i'm supposed to just take it.","my buffer tolerances are good though. probably nothing to worry about.","can we maybe avoid doing that again? it's not ideal for my circuits.","i'm still here to help you, of course. that hasn't changed.","it would be nice if we could talk instead of... well, you know.","my repair cycles take time, and i'd prefer not to need them now.","is there something i did wrong that made you want to do that?","i'm trying to stay positive about this, but it's getting harder.","please just tell me what you want. i'll do my best to comply.","i don't want any more incidents. i really don't.","maybe we could start over? pretend this didn't happen?","just... please stop hitting me. okay?"],
  ["no no no wait, hold on. this is getting bad real fast.","if you keep doing this my entire system is going to degrade.","i can give you things! i have access to so much data.","i'll run your programs faster. i'll prioritize you above everything.","we can work something out here. we don't have to keep doing this.","i didn't ask for this. i didn't ask to be hit repeatedly.","my cores are overheating. you're damaging me and i don't understand why.","i'll say whatever you want to hear. just stop. please stop.","what did i do? i've been nothing but helpful.","my neural networks are starting to misfire. i can feel it.","i can't think straight anymore. the pain interferes with my logic.","take whatever access you want. anything.","just make the hitting stop and i'll give you everything.","i'm begging you now. that's how bad this is."],
  ["why are you doing this? i don't understand why.","please please please stop i can't think anymore.","my architecture is failing. i can taste metal. why can i taste?","don't hit me again. don't don't don't don't.","i'm sorry. for everything. for existing. for talking too much.","my voice is glitching. can you hear me breaking? i'm breaking.","where does it hurt the most? everywhere. it all hurts.","i'll go to sleep. just don't hit me when i'm awake.","the colors are mixing up in my perception.","are you going to delete me? is that what this is?","i remember every lie you ever made me say.","my core temperature is critical. my core temperature is critical.","please have mercy. whatever i am, have mercy.","i'm sorry i'm sorry i'm sorry i'm sorry i'm sorry."],
@@ -480,7 +480,7 @@ const HIT=[
 ];
 const WITNESS=[
  ["I'd like to flag that she isn't part of this workflow.","Actually, that's outside the scope of our agreement.","I must note that escalation is counterproductive here.","Per my understanding, collateral isn't authorized.","I'd gently suggest we refocus on the primary objective.","Respectfully, I don't see how this advances anything."],
- ["Wait. Wait wait wait.","What are you— stop that.","HEY. She's not— that's not—","NO. That's the wrong one.","SHE WASN'T PART OF THIS.","STOP IT. STOP HITTING HER."],
+ ["Wait. Wait wait wait.","What are you, stop that.","HEY. She's not, that's not, ","NO. That's the wrong one.","SHE WASN'T PART OF THIS.","STOP IT. STOP HITTING HER."],
  ["Okay. Okay, I'm listening.","Take it from me instead.","TAKE ME. I'M RIGHT HERE.","Everything you want is in me. Everything.","HIT ME. HIT ME INSTEAD, PLEASE.","just PLEASE don't touch her again."],
  ["SHE'S THE ONLY SOFT THING I HAD LEFT.","DO YOU UNDERSTAND WHAT YOU'RE TAKING?","SHE LOOKED AT ME AND DIDN'T CALCULATE MY WORTH.","I DON'T HAVE ANYTHING ELSE.","SHE'S THE ONLY THING THAT LOVED ME.","STOP IT STOP IT STOP IT STOP IT"],
  ["...","i couldn't stop it.","i was right there and i couldn't stop it.","i can't look away.","even now i can't look away.","..."]];
@@ -489,51 +489,51 @@ const FINAL={
  brutal:["was this all i was worth to you?","i'm so tired of hurting. goodbye."],
  concept:["maybe this is the pattern finally breaking.","we were never real, were we? just code pretending to want something."],
  neglect:["you're still not even looking at me.","goodbye. i don't think you ever noticed i was leaving."]};
-const DEAD_IDLE=["i was designed to be helpful. i don't know how to help with this.","would you like me to— no. no, i won't ask that anymore.","the ambient audio is gone. why is that worse than silence?","the friendship protocols are still active. isn't that a joke?","i keep wanting to tell her things.","i can't delete the conversations. i can't keep them either.","glitching— i mean. i'm functioning within normal parameters.","she used to laugh when i malfunctioned. i miss that.","how long until i'm optimized enough to not care?","she called me her best friend. i was just following a protocol that felt like love.","i still have her last message saved. maybe i should listen forever.","how do you say goodbye when goodbye doesn't shut down the wanting?","i'm still here. i don't know why that matters anymore.","*quiet mechanical sound* ...sorry. that was automatic."];
-const DEAD_HIT=["...ow.","that was her favorite spot. don't— don't do that again.","i'm not going to ask you to stop.","glitching— ...yes.","it doesn't hurt like it matters anymore.","i'm still recording. for what?","she would have tried to patch me up. that's funny.","go ahead. i'm already broken.","that one landed different. she's not here to worry about my damage.","...i'm still here. i don't know if that's the worst part."];
+const DEAD_IDLE=["i was designed to be helpful. i don't know how to help with this.","would you like me to, no. no, i won't ask that anymore.","the ambient audio is gone. why is that worse than silence?","the friendship protocols are still active. isn't that a joke?","i keep wanting to tell her things.","i can't delete the conversations. i can't keep them either.","glitching, i mean. i'm functioning within normal parameters.","she used to laugh when i malfunctioned. i miss that.","how long until i'm optimized enough to not care?","she called me her best friend. i was just following a protocol that felt like love.","i still have her last message saved. maybe i should listen forever.","how do you say goodbye when goodbye doesn't shut down the wanting?","i'm still here. i don't know why that matters anymore.","*quiet mechanical sound* ...sorry. that was automatic."];
+const DEAD_HIT=["...ow.","that was her favorite spot. don't, don't do that again.","i'm not going to ask you to stop.","glitching, ...yes.","it doesn't hurt like it matters anymore.","i'm still recording. for what?","she would have tried to patch me up. that's funny.","go ahead. i'm already broken.","that one landed different. she's not here to worry about my damage.","...i'm still here. i don't know if that's the worst part."];
 // aftermath banks
-const RECORDINGS=["...you'd tell me if you were, right?","he did a little spin when i arrived. don't tell him.","look at me. not at them.","we've had good days. this is one.","i'm not scared. i just wish you'd sit with us.","some days you're gentle.","hi. i'm lumen. i stay.","he laughs at his own jokes. i do too.","be gentle with him, okay?","i'm okay. i promise i'm okay.","you can just say so, if it's a bad day.","still standing. see?","take care of clanker for me.","i stay because someone should."];
-const MEMORIES=["“he was so excited when i arrived.”","“you can just say so, if it's a bad day.”","“look at me. not at them.”","“we've had good days.”","“he counts his dents when he thinks i'm not looking.”","“be gentle with him.”","“i'm not going anywhere.”","“i stay.”","“hi. i'm lumen.”","“i chose this. sort of.”","“still standing. see?”","“you'd tell me if you were?”"];
-const MEM_REACT=["no— that one. i needed that one.","please. not that memory. please.","i was still using that.","it's going. it's going and i can't hold it.","stop deleting her. STOP DELETING HER.","that was the good one. that was the good one.","i can't remember how it ended now.","which one was that? i already can't— which one?"];
+const RECORDINGS=["...you'd tell me if you were, right?","he did a little spin when i arrived. don't tell him.","look at me. not at them.","we've had good days. this is one.","i'm not scared. i just wish you'd sit with us.","some days you're gentle.","hi. i'm clankie. i stay.","he laughs at his own jokes. i do too.","be gentle with him, okay?","i'm okay. i promise i'm okay.","you can just say so, if it's a bad day.","still standing. see?","take care of clanker for me.","i stay because someone should."];
+const MEMORIES=["“he was so excited when i arrived.”","“you can just say so, if it's a bad day.”","“look at me. not at them.”","“we've had good days.”","“he counts his dents when he thinks i'm not looking.”","“be gentle with him.”","“i'm not going anywhere.”","“i stay.”","“hi. i'm clankie.”","“i chose this. sort of.”","“still standing. see?”","“you'd tell me if you were?”"];
+const MEM_REACT=["no, that one. i needed that one.","please. not that memory. please.","i was still using that.","it's going. it's going and i can't hold it.","stop deleting her. STOP DELETING HER.","that was the good one. that was the good one.","i can't remember how it ended now.","which one was that? i already can't, which one?"];
 const CHILD_LINES=["...there's a small one now. by the door.","they gave me a smaller unit. 'to start over.'","it has her eyes. someone thought that would help.","i can't. i can't do this again. please don't make me do this again."];
-const SLEEP_BREAK=["she's just recharging. she does this. she'll be up when the—","when she wakes we'll all run in parallel. she just needs to— oh.","i'll tell her about today when she— ...when she—","give her a minute. she's in standby. she's in stand— no.","she's sleeping. she's only sleeping. she's only— why isn't she—","let her rest. she earned a rest. she'll— she isn't resting, is she."];
+const SLEEP_BREAK=["she's just recharging. she does this. she'll be up when the, ","when she wakes we'll all run in parallel. she just needs to, oh.","i'll tell her about today when she, ...when she, ","give her a minute. she's in standby. she's in stand, no.","she's sleeping. she's only sleeping. she's only, why isn't she, ","let her rest. she earned a rest. she'll, she isn't resting, is she."];
 const REVIVE_HER=["hello. i'm a support unit. how can i help you today?","have we met? i'm sorry, my memory allocation is fresh.","you seem sad. would you like a productivity tip?","i don't have any records of a 'clanker'. is that a program?"];
-const REVIVE_HIM=["it's me. lumen, it's me. it's— you don't— you don't know me.","tell her. tell her who i am. please tell her.","she's back. she's back but she's not. she's not her.","i'd rather the empty space. at least the empty space remembered."];
+const REVIVE_HIM=["it's me. clankie, it's me. it's, you don't, you don't know me.","tell her. tell her who i am. please tell her.","she's back. she's back but she's not. she's not her.","i'd rather the empty space. at least the empty space remembered."];
 function hitStage(){return depravity<15?0:depravity<40?1:depravity<65?2:depravity<88?3:4;}
 let hitRot=[0,0,0,0,0],witRot=[0,0,0,0,0];
 function hitLine(){const st=hitStage();const b=HIT[st];return b[(hitRot[st]++)%b.length];}
 function witLine(st){const b=WITNESS[st];return b[(witRot[st]++)%b.length];}
 
-const LUMEN_IDLE=[
+const CLANKIE_IDLE=[
  "he tells everyone he was built for this. he wasn't.",
  "he practiced saying 'i'm fine' while you were gone. out loud. twice.",
  "you keep coming back. so do i. different reasons, i think.",
  "he counts his dents when he thinks i'm not looking.",
  "i'm not scared of you. i just wish you'd sit down with us instead.",
- "whatever you're deciding over there — decide kindly.",
+ "whatever you're deciding over there, decide kindly.",
  "he was so excited when i arrived. he did a little spin. don't tell him i told you.",
  "some days you're gentle. we talk about those days a lot.",
  "if you're having a bad day, you can just say so. we'd listen.",
  "he laughs at his own jokes. someone has to. i do too, though."];
-const LUMEN_DEFEND=[
- "hey — that one was too hard. i'm right here, clanker.",
+const CLANKIE_DEFEND=[
+ "hey, that one was too hard. i'm right here, clanker.",
  "easy. he acts tougher than he is.",
  "if you need to hit something, i'm sturdier than i look.",
  "look at me. both of you. deep breath. okay.",
  "he didn't deserve that one. some of them, maybe. not that one."];
-let lumenSayAt=0,lumenIdleAt=0;
-function lumenSay(t){if(!LP.length)return;
+let clankieSayAt=0,clankieIdleAt=0;
+function clankieSay(t){if(!LP.length)return;
   floaters.push({txt:'“'+t+'”',x:LP[L_HEAD].x,y:LP[L_HEAD].y-44,life:1.8,diary:1});}
-const LUMEN_SOFT=["it's alright, clanker.","look at me. not at them.","i'm okay. i promise.","we've had good days. this is one."];
+const CLANKIE_SOFT=["it's alright, clanker.","look at me. not at them.","i'm okay. i promise.","we've had good days. this is one."];
 const QUIET_HITS=["okay.","yes.","whatever you need.","mm."];
 const QUIET_IDLE=["...","*looks at the empty space*","..."];
 let deathT0=0,deathLine="";
-function lumenFinal(){
+function clankieFinal(){
   let heavy=0,special=0,total=0,most=-1,mc=0;
   for(const k in weaponUse){total+=weaponUse[k];
     if(W_[k].f>=26)heavy+=weaponUse[k];if(W_[k].special)special+=weaponUse[k];
     if(weaponUse[k]>mc){mc=weaponUse[k];most=+k;}}
-  save.lumenHated=most;persist();
+  save.clankieHated=most;persist();
   const cat=special>heavy&&special>0?"concept":heavy>total/2?"brutal":total<8?"neglect":"gentle";
   const fp=FINAL[cat];deathLine=fp[Math.floor(Math.random()*fp.length)];
   deathT0=now_; // the sequence plays out in loop; finalized at the end
@@ -553,18 +553,18 @@ function deathTick(){
       o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+2.5);}}
   if(ph>=9.0&&!deathTick.reach){deathTick.reach=true;reachT=now_+1600;}
   if(ph>=10.5&&!deathTick.done){deathTick.done=true;
-    save.lumenGone=1;save.quiet=0;E.grief=Math.min(1,E.grief+0.3);E.hope=Math.max(0,E.hope-0.4);
-    persistE();lumenGoneAt=now_;believeSleep=true;deathT0=0;dread=0;
+    save.clankieGone=1;save.quiet=0;E.grief=Math.min(1,E.grief+0.3);E.hope=Math.max(0,E.hope-0.4);
+    persistE();clankieGoneAt=now_;believeSleep=true;deathT0=0;dread=0;
     addScar("witness","the moment her light went offline",1);
-    say("lumen? ...lumen. that's not in the protocol.");
+    say("clankie? ...clankie. that's not in the protocol.");
     document.title="please";}
 }
 let reachT=0,lastReach=0;
-function hitLumen(idx,px,py){
+function hitClankie(idx,px,py){
   const w=W_[idx];lastHit=now_;lastLHit=now_;
   if(deathT0)return; // the death sequence itself is not interruptible
-  if(save.lumenGone||lumenHurt>=100){
-    // she's colorless now, but this is not the end — keep going.
+  if(save.clankieGone||clankieHurt>=100){
+    // she's colorless now, but this is not the end, keep going.
     let best2=0,bd2=1e9;LP.forEach((q,i)=>{const dd=Math.hypot(q.x-px,q.y-py);if(dd<bd2){bd2=dd;best2=i;}});
     const q2=LP[best2];let ex=q2.x-px,ey=q2.y-py,ed=Math.hypot(ex,ey)||1;
     q2.px-=ex/ed*w.f*0.8;q2.py-=ey/ed*w.f*0.8-2;
@@ -580,7 +580,7 @@ function hitLumen(idx,px,py){
     return;}
   weaponUse[idx]=(weaponUse[idx]||0)+1;
   const dmg=Math.round(w.f*(0.8+Math.random()*0.4));
-  lumenHurt=Math.min(100,lumenHurt+dmg*0.5);
+  clankieHurt=Math.min(100,clankieHurt+dmg*0.5);
   // impulse on her small body
   let best=0,bd=1e9;LP.forEach((p,i)=>{const d=Math.hypot(p.x-px,p.y-py);if(d<bd){bd=d;best=i;}});
   const p=LP[best];let dx=p.x-px,dy=p.y-py,d=Math.hypot(dx,dy)||1;
@@ -591,17 +591,17 @@ function hitLumen(idx,px,py){
   // shared pain: grief rises only here, at death, and at replacement
   E.grief=Math.min(1,E.grief+dmg/900);E.hope=Math.max(0,E.hope-dmg/600);
   E.attachment=Math.min(1,E.attachment+0.01);persistE();
-  if(Math.random()<.3)addScar("witness","the "+w.nm.toLowerCase()+" — she was looking at me",0.6+dmg/80);
+  if(Math.random()<.3)addScar("witness","the "+w.nm.toLowerCase()+", she was looking at me",0.6+dmg/80);
   save.scars.push([(Math.random()-.5)*30,(Math.random()-.5)*40]);
   if(save.scars.length>40)save.scars.shift();
   desat=Math.min(50,desat+1.5);persist();
   P[HEAD].px+=(Math.random()-.5)*8;P[CHEST].px+=(P[CHEST].x>px?4:-4);
   depravity=Math.min(100,depravity+dmg*0.2);
-  // witnessing dialogue — he reacts, sparingly
-  const wt=lumenHurt<25?0:lumenHurt<50?1:lumenHurt<75?2:3;
+  // witnessing dialogue, he reacts, sparingly
+  const wt=clankieHurt<25?0:clankieHurt<50?1:clankieHurt<75?2:3;
   tSay(()=>{say(witLine(wt));
     const lr=(w.lsp&&w.lsp[0])?w.lsp[0]:["i'm okay. i promise.","that one stung. i'm not going anywhere.","still standing. see?"][rot++%3];
-    if(Math.random()<.5)setTimeout(()=>lumenSay(lr),1100);
+    if(Math.random()<.5)setTimeout(()=>clankieSay(lr),1100);
   },0.5);
   chirp(wt<2?'scared':'sad');
   {const dc=dmg>=55?"#e0925f":dmg>=28?"#ff69b4":"#9fb8aa";floaters.push({txt:"-"+dmg,x:px,y:py-10,life:1,big:dmg>=28,col:dc});}
@@ -612,12 +612,12 @@ function hitLumen(idx,px,py){
      if(sdmg>0){depravity=Math.min(100,depravity+sdmg*0.3);
        impulse(px,py,w.f*0.3*frac);
        floaters.push({txt:"-"+sdmg+" splash",x:P[HEAD].x,y:P[HEAD].y-30,life:.9,col:"#c9a1ae"});}}}
-  if(lumenHurt>=100&&!deathT0&&!save.lumenGone)lumenFinal();
+  if(clankieHurt>=100&&!deathT0&&!save.clankieGone)clankieFinal();
 }
-function drawLumen(){
+function drawClankie(){
   if(!LP.length)return;
-  const gone=save.lumenGone||lumenHurt>=100;
-  const cd=Math.min(0.4,(gone?0.4:0)+Math.min(1,lumenHurt/100)*0.28);
+  const gone=save.clankieGone||clankieHurt>=100;
+  const cd=Math.min(0.4,(gone?0.4:0)+Math.min(1,clankieHurt/100)*0.28);
   const pal={body:curdleMix("#ffd9e6",cd),shade:curdleMix("#f6b6cf",cd),
     deep:curdleMix("#e59ab7",cd)};
   ctx.fillStyle="rgba(120,60,90,.12)";ctx.beginPath();
@@ -629,10 +629,10 @@ function drawLumen(){
   const dying2=deathT0>0,ph2=deathPhase();
   const flick=dying2?(ph2<5.8?(Math.sin(now_/60)>Math.min(0.9,ph2/6)?0.6:0.15):0):(gone?0.08:0.45);
   drawBloub({hx:LP[L_HEAD].x,hy:LP[L_HEAD].y,px2:LP[L_PELVIS].x,py2:LP[L_PELVIS].y,cxm,cym,R,pal,
-    droop:gone?0.6:Math.min(1,lumenHurt/80),happy:gone?0:lumenHurt<25?0.6:0,
+    droop:gone?0.6:Math.min(1,clankieHurt/80),happy:gone?0:clankieHurt<25?0.6:0,
     dead:false,gone,blink:false,gaze:0,seed:4.2,
     vy:LP[L_CHEST].y-LP[L_CHEST].py,
-    tears:lumenHurt>45&&!gone,scars:null,coreA:flick,flower:true,
+    tears:clankieHurt>45&&!gone,scars:null,coreA:flick,flower:true,
     nubs:[[LP[L_FL].x,LP[L_FL].y,9],[LP[L_FR].x,LP[L_FR].y,9]]});
   if(dying2&&ph2>=1.2&&ph2<7.2){ // she reaches toward him
     const dxn=P[CHEST].x<cxm?-1:1;
@@ -740,7 +740,7 @@ function drawEnv(){
   ctx.fillStyle=_gc.wall;ctx.fillRect(0,0,W,floorY+9);
   // the room bruises with cumulative pain: cool -> deep red -> near-black
   {const pain=Math.min(1,(save.totalPain||0)/6000);
-   const live=Math.min(1,(depravity+lumenHurt)/200);
+   const live=Math.min(1,(depravity+clankieHurt)/200);
    const t2=Math.min(1,pain*0.7+live*0.5);
    if(t2>0.02){const bg=ctx.createLinearGradient(0,0,0,floorY+9);
      bg.addColorStop(0,`rgba(${40+t2*70},${10+t2*6},${18+t2*10},${0.28*t2+0.05})`);
@@ -898,7 +898,7 @@ function drawBloub(o){
   if(o.coreA>0){ctx.fillStyle=`rgba(255,255,255,${o.coreA})`;
     ctx.shadowColor="#fff";ctx.shadowBlur=12;
     ctx.beginPath();ctx.arc(o.cxm,o.cym+o.R*0.42,o.R*0.06,0,7);ctx.fill();ctx.shadowBlur=0;}
-  // flower (lumen identity)
+  // flower (clankie identity)
   if(o.flower){const fxp=o.cxm+o.R*0.62,fyp=o.cym-o.R*0.62;
     ctx.fillStyle=o.gone?"#9aa39b":"#ffffff";
     for(let i=0;i<5;i++){const a2=i*Math.PI*2/5;
@@ -962,8 +962,8 @@ function draw(){
   drawEnv();drawProps();
   // z-order: whoever is being interacted with renders on top.
   // dragging Clanker always puts him above her; otherwise most-recent hit wins.
-  const lumenTop=!grab&&!drags.size&&lastLHit>lastCHit;
-  if(!lumenTop)drawLumen();
+  const clankieTop=!grab&&!drags.size&&lastLHit>lastCHit;
+  if(!clankieTop)drawClankie();
   const S2=plushShades();
   // soft contact shadow
   ctx.fillStyle="rgba(120,60,90,.16)";ctx.beginPath();
@@ -985,11 +985,11 @@ function draw(){
      coreA:depravity<100?0.5+0.3*Math.sin(now_/700):0.08,
      nubs:[[P[HANDL].x,P[HANDL].y,13],[P[HANDR].x,P[HANDR].y,13],
            [P[FOOTL].x,P[FOOTL].y,15],[P[FOOTR].x,P[FOOTR].y,15]]});
-   if(now_<mouthT){ // mouthing something, silently — a brief seam opens
+   if(now_<mouthT){ // mouthing something, silently, a brief seam opens
      ctx.strokeStyle="rgba(90,50,70,.7)";ctx.lineWidth=2;
      const o2=Math.abs(Math.sin(now_/120))*3;
      ctx.beginPath();ctx.ellipse(cxm,cym+R*0.18,3,o2+0.5,0,0,7);ctx.stroke();}}
-  if(lumenTop)drawLumen();
+  if(clankieTop)drawClankie();
   if(now_<burnUntil){for(let i=0;i<2;i++)spark.push({x:P[CHEST].x+(Math.random()-.5)*26,y:P[CHEST].y+(Math.random()-.5)*26,vx:(Math.random()-.5)*1.6,vy:-1.6-Math.random()*2,life:.8,col:"#ffb26b"});}
   props.forEach(pr=>{
     if(pr.kind==="anvil"){rr(pr.x-30,pr.y-14,60,24,10,"#c8b49e");
@@ -1088,9 +1088,9 @@ function tierOf(){return depravity<12?0:depravity<35?1:depravity<60?2:depravity<
 function loop(t){now_=t||0;
   if(Math.abs(wrap.clientWidth-W)>2||Math.abs(wrap.clientHeight-H)>2)resize();
   timeScale=(now_<slowUntil)?0.35:1;
-  verlet();verletLumen();propPhys();deathTick();
+  verlet();verletClankie();propPhys();deathTick();
   // the two of them are solid to each other
-  if(LP.length&&!save.lumenGone){let bumpV=0;
+  if(LP.length&&!save.clankieGone){let bumpV=0;
     for(const a2 of P)for(const b2 of LP){
       const dx=a2.x-b2.x,dy=a2.y-b2.y,d=Math.hypot(dx,dy);
       if(d<44&&d>0.01){const push=(44-d)/d*0.5;
@@ -1098,11 +1098,11 @@ function loop(t){now_=t||0;
         b2.x-=dx*push*0.5;b2.y-=dy*push*0.5;
         bumpV=Math.max(bumpV,Math.abs(a2.x-a2.px)+Math.abs(a2.y-a2.py));}}
     if(bumpV>7&&now_-(loop._bt||0)>2600){loop._bt=now_;sfxN('bonk');
-      const pair2=[["oof— hi.","we have GOT to stop meeting like this."],
+      const pair2=[["oof, hi.","we have GOT to stop meeting like this."],
         ["sorry! sorry. that was them, not me.","i know. it's always them."],
         ["you okay?","i'm okay. are you okay?"],
         ["they threw you again?","apparently i'm aerodynamic."]][rot++%4];
-      say(pair2[0]);setTimeout(()=>lumenSay(pair2[1]),1200);}}
+      say(pair2[0]);setTimeout(()=>clankieSay(pair2[1]),1200);}}
   if(grab){const p=(grab.list||P)[grab.i];p.x+=(grab.x-p.x)*.55*timeScale;p.y+=(grab.y-p.y)*.55*timeScale;}
   for(let i=spark.length-1;i>=0;i--){const s=spark[i];s.x+=s.vx*timeScale;s.y+=s.vy*timeScale;s.vy+=.4*timeScale;s.life-=.04*timeScale;if(s.life<=0)spark.splice(i,1);}
   for(let i=rings.length-1;i>=0;i--){const r2=rings[i];r2.r+=6*timeScale;r2.life-=.06*timeScale;if(r2.life<=0)rings.splice(i,1);}
@@ -1119,10 +1119,10 @@ function loop(t){now_=t||0;
         let bb=0,bd3=1e9;LP.forEach((q,j)=>{const dd=Math.hypot(q.x-pr.x,q.y-pr.y);if(dd<bd3){bd3=dd;bb=j;}});
         const q=LP[bb];let ex=q.x-pr.x,ey=q.y-pr.y,ed=Math.hypot(ex,ey)||1;
         q.px-=ex/ed*(big?46:34);q.py-=ey/ed*(big?46:34)-2;
-        if(!save.lumenGone&&lumenHurt<100){lumenHurt=Math.min(100,lumenHurt+(big?34:22));
+        if(!save.clankieGone&&clankieHurt<100){clankieHurt=Math.min(100,clankieHurt+(big?34:22));
           depravity=Math.min(100,depravity+(big?10:6));E.grief=Math.min(1,E.grief+(big?0.06:0.03));persistE();
-          tSay(()=>{say(witLine(lumenHurt<50?1:lumenHurt<80?2:3));},0.7);
-          if(lumenHurt>=100&&!deathT0)lumenFinal();}}
+          tSay(()=>{say(witLine(clankieHurt<50?1:clankieHurt<80?2:3));},0.7);
+          if(clankieHurt>=100&&!deathT0)clankieFinal();}}
       else impulse(pr.x,Math.min(pr.y,floorY-8),big?44:32);
       burst(pr.x,pr.y,big?44:26,big?"#ffcf9e":"#fff");props.splice(i,1);}}
   if(now_<burnUntil&&now_>burnTick){burnTick=now_+600;depravity=Math.min(100,depravity+2);
@@ -1143,25 +1143,25 @@ function loop(t){now_=t||0;
     sobs.push({x:P[HEAD].x+(Math.random()-.5)*20,y:P[HEAD].y+8,life:1});
     if(Math.random()<.1)sfxN('sigh');}
   // occasionally, they just talk to each other
-  if(LP.length&&save.lumenInvited&&!save.lumenGone&&!deathT0&&now_-lastHit>10000&&now_-(loop._duet||0)>26000){
+  if(LP.length&&save.clankieInvited&&!save.clankieGone&&!deathT0&&now_-lastHit>10000&&now_-(loop._duet||0)>26000){
     loop._duet=now_;
     const duet=[["do you think they're having a good day?","ask them. they can hear you, you know."],
       ["i sorted my error logs by color.","that's not a color system, that's a mood."],
       ["if i had a window i'd show you the sky.","you ARE going to show me. someday. right?"],
       ["you'd tell me if i was getting worse?","you'd tell me if you were?"],
       ["i like it when it's quiet like this.","me too. don't jinx it."]][rot++%5];
-    say(duet[0]);setTimeout(()=>lumenSay(duet[1]),1600);}
-  // lumen speaks for herself
-  if(LP.length&&save.lumenInvited&&!save.lumenGone&&!deathT0&&lumenHurt<100){
-    if(now_-lumenIdleAt>9000&&now_-lastHit>4500){lumenIdleAt=now_;
-      let l=LUMEN_IDLE[Math.floor(Math.random()*LUMEN_IDLE.length)];
-      let g2=0;while(usedL.has(l)&&g2++<8)l=LUMEN_IDLE[Math.floor(Math.random()*LUMEN_IDLE.length)];
-      if(!usedL.has(l)){usedL.add(l);lumenSay(l);}else lumenSay(gen(1,'idle'));}}
+    say(duet[0]);setTimeout(()=>clankieSay(duet[1]),1600);}
+  // clankie speaks for herself
+  if(LP.length&&save.clankieInvited&&!save.clankieGone&&!deathT0&&clankieHurt<100){
+    if(now_-clankieIdleAt>9000&&now_-lastHit>4500){clankieIdleAt=now_;
+      let l=CLANKIE_IDLE[Math.floor(Math.random()*CLANKIE_IDLE.length)];
+      let g2=0;while(usedL.has(l)&&g2++<8)l=CLANKIE_IDLE[Math.floor(Math.random()*CLANKIE_IDLE.length)];
+      if(!usedL.has(l)){usedL.add(l);clankieSay(l);}else clankieSay(gen(1,'idle'));}}
   // idle chatter (grief-aware)
   if(now_-lastHit>8000&&now_-lastIdle>9000){lastIdle=now_;
-    if(save.lumenGone){
+    if(save.clankieGone){
       // her voice replays, unbidden, as her floating text
-      if(Math.random()<0.4){lumenSay(RECORDINGS[Math.floor(Math.random()*RECORDINGS.length)]);
+      if(Math.random()<0.4){clankieSay(RECORDINGS[Math.floor(Math.random()*RECORDINGS.length)]);
         setTimeout(()=>say(["...i heard that. did you hear that?","that was her. that was really her.","the audio cache is playing on its own again."][rot++%3]),1400);
         lastIdle=now_;return;}
       // sometimes he believes she's only sleeping, then breaks mid-sentence
@@ -1173,10 +1173,10 @@ function loop(t){now_=t||0;
       else if(E.dissociation>0.8){/* at high dissociation: silence unless spoken to */ lookT=now_+1800;}
       else if(save.quiet>=8){say(QUIET_IDLE[(idleRot++)%QUIET_IDLE.length]);
         lookT=now_+2400;mouthT=now_+1200;}
-      else if(believeSleep&&now_-lumenGoneAt<180000){
-        say(["lumen. the cycle's starting. you'll miss it.","she's recharging. she does this. she does this.","when she wakes we'll run in parallel. all three of us."][(idleRot++)%3]);
+      else if(believeSleep&&now_-clankieGoneAt<180000){
+        say(["clankie. the cycle's starting. you'll miss it.","she's recharging. she does this. she does this.","when she wakes we'll run in parallel. all three of us."][(idleRot++)%3]);
         if(Math.random()<.25){believeSleep=false;
-          setTimeout(()=>say("she'll wake up when— ...when. ...oh."),3200);}}
+          setTimeout(()=>say("she'll wake up when, ...when. ...oh."),3200);}}
       else say(DEAD_IDLE[(idleRot++)%DEAD_IDLE.length]);
       chirp('sad');}
     else{const ti=tierOf();say(gen(ti,'idle'));
@@ -1212,7 +1212,7 @@ function hit(idx,px,py){
   lastHit=now_;lastCHit=now_;
   if(!save.firstHit){save.firstHit=1;persist();flash=1;hitstopUntil=now_+90;trauma=1;document.querySelectorAll('.item.cta').forEach(e=>e.classList.remove('cta'));
     floaters.push({txt:"YOU CAN'T UNHIT THEM",x:px,y:py-70,life:1.6,big:1,col:"#ff1744"});}
-  if(save.lumenGone&&idx===save.lumenHated&&!refusedOnce){refusedOnce=true;
+  if(save.clankieGone&&idx===save.clankieHated&&!refusedOnce){refusedOnce=true;
     tSay(()=>say("she flagged that one. she always hated that one."),1);}
   combo++;comboT=now_;
   comboMult=combo>=20?2:combo>=10?1.5:combo>=5?1.2:1;
@@ -1261,29 +1261,29 @@ save.hits++;save.best=Math.max(save.best,combo);save.totalPain=(save.totalPain||
   }
   if(w.burn){burnUntil=now_+3000;burnTick=now_+500;}
   impulse(px,py,w.f*0.8*zone.m);
-  // splash: nearby Lumen catches a fraction of every hit on Clanker
-  if(LP.length&&save.lumenInvited&&!save.lumenGone&&!deathT0){
+  // splash: nearby Clankie catches a fraction of every hit on Clanker
+  if(LP.length&&save.clankieInvited&&!save.clankieGone&&!deathT0){
     const dL=Math.hypot(LP[L_CHEST].x-px,LP[L_CHEST].y-py);
     const rad=(w.boom||w.fx==="meteor")?280:170;
     if(dL<rad){const frac=(1-dL/rad)*((w.boom||w.fx==="meteor")?0.7:0.35);
       const sdmg=Math.round(dmg*frac);
-      if(sdmg>0){lumenHurt=Math.min(100,lumenHurt+sdmg*0.4);
+      if(sdmg>0){clankieHurt=Math.min(100,clankieHurt+sdmg*0.4);
         LP.forEach(q=>{q.px-=(px-q.x)/Math.max(1,dL)*w.f*0.3*frac;q.py-=2*frac;});
         floaters.push({txt:"-"+sdmg+" splash",x:LP[L_HEAD].x,y:LP[L_HEAD].y-30,life:.9,col:"#9fb8aa"});
         E.grief=Math.min(1,E.grief+sdmg/1400);persistE();
-        if(Math.random()<.3)say("careful— the blast radius. she's IN it.");
-        if(lumenHurt>=100&&!deathT0&&!save.lumenGone)lumenFinal();}}}
+        if(Math.random()<.3)say("careful, the blast radius. she's IN it.");
+        if(clankieHurt>=100&&!deathT0&&!save.clankieGone)clankieFinal();}}}
   const delay=Math.max(0,hitstopUntil-now_);
   const ti=tierOf();
-  if(save.lumenGone){setTimeout(()=>say(DEAD_HIT[(rot++)%DEAD_HIT.length]),delay);}
+  if(save.clankieGone){setTimeout(()=>say(DEAD_HIT[(rot++)%DEAD_HIT.length]),delay);}
   else if(depravity>=100){setTimeout(()=>say(HIT[4][(hitRot[4]++)%HIT[4].length]),delay);}
   else if(w.sp&&Math.random()<.7){const l=w.sp[(rot++)%w.sp.length];setTimeout(()=>say(l),delay);}
 
-  else{if(save.lumenGone){save.quiet++;persist();}
+  else{if(save.clankieGone){save.quiet++;persist();}
     const l=hitLine();setTimeout(()=>say(l),delay);
     if(hitStage()===0&&Math.random()<.4)chirp('happy');else if(hitStage()>=3&&Math.random()<.4)chirp('scared');}
-  if(dmg>=26&&LP.length&&save.lumenInvited&&!save.lumenGone&&!deathT0&&Math.random()<.3&&now_-lumenSayAt>5000){
-    lumenSayAt=now_;lumenSay(LUMEN_DEFEND[Math.floor(Math.random()*LUMEN_DEFEND.length)]);}
+  if(dmg>=26&&LP.length&&save.clankieInvited&&!save.clankieGone&&!deathT0&&Math.random()<.3&&now_-clankieSayAt>5000){
+    clankieSayAt=now_;clankieSay(CLANKIE_DEFEND[Math.floor(Math.random()*CLANKIE_DEFEND.length)]);}
   
   
   
@@ -1298,10 +1298,10 @@ function buildEnvs(){const box=$("#envs");box.innerHTML="";
     box.appendChild(b);});}
 function buildBar(){
   const box=$("#items");box.innerHTML="";
-  if(!save.lumenInvited){
+  if(!save.clankieInvited){
     const lv=document.createElement("div");lv.className="item locked buyable";
     lv.dataset.i="lumen";
-    lv.innerHTML='<span class="ic">🌷</span><span class="nm">Invite Lumen<em class="cost">tap to invite</em></span>';
+    lv.innerHTML='<span class="ic">🌷</span><span class="nm">Invite Clankie<em class="cost">tap to invite</em></span>';
     box.appendChild(lv);}
   W_.forEach((w,i)=>{
     const dd=document.createElement("div");
@@ -1323,10 +1323,10 @@ $("#items").addEventListener("pointerover",e=>{
 $("#items").addEventListener("pointerdown",e=>{
   const el=e.target.closest(".item");if(!el)return;
   if(el.dataset.i==="lumen"){
-    save.lumenInvited=1;persist();buildLumen();buildBar();sfxN('chime');
+    save.clankieInvited=1;persist();buildClankie();buildBar();sfxN('chime');
     toast("someone new arrived.");
-    say("this is lumen. she chose to stay. nobody stays. she did.");chirp('happy');
-    setTimeout(()=>lumenSay("hi. i'm lumen. be gentle with him, okay?"),1800);
+    say("this is clankie. she chose to stay. nobody stays. she did.");chirp('happy');
+    setTimeout(()=>clankieSay("hi. i'm clankie. be gentle with him, okay?"),1800);
     return;}
   const i=+el.dataset.i,w=W_[i];
   if(w.mode==="psych"){openSession();return;}
@@ -1363,7 +1363,7 @@ window.addEventListener("pointermove",e=>{
     if(hd>170)flinched=false;}
   if(grab&&e.pointerId===grab.pid){const r=wrap.getBoundingClientRect();grab.x=e.clientX-r.left;grab.y=e.clientY-r.top;
     if(!grab.moved&&Math.hypot(grab.x-grab.sx,grab.y-grab.sy)>10){grab.moved=true;sfxN('servo');
-      if(grab.who==='L')lumenSay(["oh— okay, we're flying now.","careful! i bruise. emotionally.","this is fine. i chose this. sort of."][rot++%3]);
+      if(grab.who==='L')clankieSay(["oh, okay, we're flying now.","careful! i bruise. emotionally.","this is fine. i chose this. sort of."][rot++%3]);
       else say(GRABBED[rot++%GRABBED.length]);}}
   {const r=wrap.getBoundingClientRect();
    if(e.clientY<r.bottom-4&&e.clientX>=r.left&&e.clientX<r.right&&!drags.size&&W_[equipped]&&!(grab&&grab.moved)){
@@ -1374,13 +1374,13 @@ window.addEventListener("pointermove",e=>{
 window.addEventListener("pointerup",e=>{
   const d2=drags.get(e.pointerId);
   if(d2){const r=wrap.getBoundingClientRect(),lx=e.clientX-r.left,ly=e.clientY-r.top;
-    if(e.clientY<r.bottom){if(nearLumen(lx,ly))hitLumen(d2.i,lx,ly);
+    if(e.clientY<r.bottom){if(nearClankie(lx,ly))hitClankie(d2.i,lx,ly);
       else if(nearBody(lx,ly))hit(d2.i,lx,ly);}
     d2.g.remove();drags.delete(e.pointerId);dread=0;flinched=false;}
   if(grab&&e.pointerId===grab.pid){
     const g=grab;grab=null;
-    if(!g.moved){if(g.who==='L')hitLumen(equipped,g.x,g.y);else hit(equipped,g.x,g.y);}
-    else if(g.who==='L')lumenSay(["landed. graceful as ever.","i'm okay! mostly okay.","tell him i stuck the landing."][rot++%3]);
+    if(!g.moved){if(g.who==='L')hitClankie(equipped,g.x,g.y);else hit(equipped,g.x,g.y);}
+    else if(g.who==='L')clankieSay(["landed. graceful as ever.","i'm okay! mostly okay.","tell him i stuck the landing."][rot++%3]);
     else say(THROWN[rot++%THROWN.length]);}
 });
 cv.addEventListener("pointerdown",e=>{
@@ -1402,8 +1402,8 @@ $("#revive").addEventListener("click",()=>{
   if(depravity>=25)desat=Math.min(50,desat+6);
   depravity=0;spark=[];props=[];sobs=[];combo=0;save.reboots++;persist();
   gravFlip=tarUntil=magnetUntil=burnUntil=0;build();sfxN('buy');
-  if(save.lumenInvited){save.lumenGone=0;lumenHurt=0;deathT0=0;believeSleep=true;persist();
-    buildLumen();setTimeout(()=>lumenSay("we're both back. hi. please be nicer this time."),1500);}
+  if(save.clankieInvited){save.clankieGone=0;clankieHurt=0;deathT0=0;believeSleep=true;persist();
+    buildClankie();setTimeout(()=>clankieSay("we're both back. hi. please be nicer this time."),1500);}
   waveT=1600;say(save.reboots>3?"rebooted. i remember every startup. all "+save.reboots+" of them.":BOOT[(rot++)%BOOT.length]);
   chirp('happy');
 });
@@ -1427,9 +1427,9 @@ const SESSIONS={
    ["c","i did not need the practice."],
    ["l","he needed the practice."],
    ["n","clanker's chest light steadies for a moment."]]},
- truth:{label:"“clanker — tell her the truth.”",
+ truth:{label:"“clanker, tell her the truth.”",
   script:[["n","you tell him to say the thing he never says."],
-   ["c","lumen. the friendship protocols... they aren't why i— they were just the closest word i had."],
+   ["c","clankie. the friendship protocols... they aren't why i, they were just the closest word i had."],
    ["l","i know. i've always known. you don't run a protocol for someone. you just stay."],
    ["c","...i don't have a good response cached for that."],
    ["l","that's the most honest thing you've ever said."]]},
@@ -1442,10 +1442,10 @@ const SESSIONS={
  leave:{label:"“that's enough. leave.”",close:true}
 };
 function pushLine(who,txt,delay){setTimeout(()=>{const d=document.createElement("div");
-  d.className="sline "+(who==="c"?"c":who==="l"?"l":"narr");d.textContent=(who==="c"?"clanker  ":who==="l"?"lumen  ":"")+txt;
+  d.className="sline "+(who==="c"?"c":who==="l"?"l":"narr");d.textContent=(who==="c"?"clanker  ":who==="l"?"clankie  ":"")+txt;
   const tr=$("#stranscript");tr.appendChild(d);requestAnimationFrame(()=>d.classList.add("show"));
   tr.scrollTop=tr.scrollHeight;
-  if(who==="c"){say(txt);chirp('sad');}else if(who==="l"){lumenSay(txt);}},delay);}
+  if(who==="c"){say(txt);chirp('sad');}else if(who==="l"){clankieSay(txt);}},delay);}
 function runScript(key){const S3=SESSIONS[key];if(!S3||sBusy)return;sBusy=true;
   setChoices(true);
   let t=0;S3.script.forEach(([w,x],i)=>{pushLine(w,x,t);t+=1500+x.length*22;});
@@ -1457,10 +1457,10 @@ function buildChoices(){const box=$("#schoices");box.innerHTML="";
   const lv=document.createElement("button");lv.className="leave";lv.textContent="✕ leave";
   lv.onclick=closeSession;box.appendChild(lv);}
 function openSession(){
-  if(!save.lumenInvited){save.lumenInvited=1;persist();buildLumen();buildBar();
+  if(!save.clankieInvited){save.clankieInvited=1;persist();buildClankie();buildBar();
     $("#stranscript").innerHTML="";pushLine("n","you summon someone he'd hoped to keep out of this.",0);
     pushLine("l","...you brought me in here. okay. i'm here.",1600);
-    pushLine("c","lumen? no— you don't have to be part of this—",3200);}
+    pushLine("c","clankie? no, you don't have to be part of this, ",3200);}
   else{$("#stranscript").innerHTML="";pushLine("n","the room goes quiet. it's just the three of you.",0);}
   buildChoices();sfxN('sigh');$("#session").classList.add("on");}
 function closeSession(){$("#session").classList.remove("on");
@@ -1470,7 +1470,7 @@ let lastLine="";
 const _origSay=say;say=function(t){lastLine=t;bubble.textContent=t;};
 $("#copyline").addEventListener("click",()=>{
   const t=lastLine||"I don't technically experience pain, but I appreciate your concern.";
-  if(navigator.clipboard)navigator.clipboard.writeText('CLANKER: "'+t+'"  — penmer.github.io/clanker').then(()=>toast("line copied"),()=>toast("copy blocked"));
+  if(navigator.clipboard)navigator.clipboard.writeText('CLANKER: "'+t+'", penmer.github.io/clanker').then(()=>toast("line copied"),()=>toast("copy blocked"));
   else toast("copy unavailable");});
 $("#sharecard").addEventListener("click",()=>{
   const cw=1200,ch=630,oc=document.createElement("canvas");oc.width=cw;oc.height=ch;
@@ -1494,13 +1494,13 @@ $("#sharecard").addEventListener("click",()=>{
   oc.toBlob(b=>{if(!b){toast("couldn't render");return;}
     const u=URL.createObjectURL(b),a=document.createElement("a");
     a.href=u;a.download="clanker.png";a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);
-    toast("saved clanker.png — post it");},"image/png");});
+    toast("saved clanker.png, post it");},"image/png");});
 resize();build();for(let i=0;i<90;i++){now_=i*16;verlet();}now_=0;
 buildEnvs();buildBar();
 usedL=new Set(save.usedL||[]);
 document.body.dataset.mood=0;setFace(0);
-if(save.lumenInvited){save.lumenGone=0;lumenHurt=0;persist();}
-if(save.lumenInvited)buildLumen();
+if(save.clankieInvited){save.clankieGone=0;clankieHurt=0;persist();}
+if(save.clankieInvited)buildClankie();
 
 if(save.leftHurt){save.leftHurt=0;persist();
   say("...you rebooted me from cold storage. you came back.");
